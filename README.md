@@ -1,6 +1,6 @@
 # todo-app
 
-[Demo](https://todo-app-one-omega.vercel.app/)
+-- [Demo](https://todo-app-one-omega.vercel.app/) --
 
 ### TODO
 
