@@ -1,3 +1,3 @@
 # todo-app
 
-- [] - add infinity scroll feed
+- [ ] - add infinity scroll feed
