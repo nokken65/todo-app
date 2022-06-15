@@ -26,7 +26,7 @@ const AddListOfTodosFormView = ({
     control,
     formState: { errors, isSubmitSuccessful },
   } = useForm<Pick<AddListOfTodosInputs, 'label'>>({
-    mode: 'all',
+    mode: 'onChange',
     resolver: yupResolver(addListOfTodosSchema),
     defaultValues: { label: '' },
   });

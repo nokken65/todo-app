@@ -3,6 +3,7 @@ import { DateTime, Heading, ProgressBar } from '~/shared/components';
 import { AddListOfTodos } from '~/widgets/AddListOfTodos';
 import { Header } from '~/widgets/Header';
 import { ListOfTodosFeed } from '~/widgets/ListOfTodosFeed';
+import { SearchListOfTodos } from '~/widgets/SearchListOfTodos';
 
 const FeedRoute = () => {
   return (
@@ -18,7 +19,10 @@ const FeedRoute = () => {
 
         <DatePicker />
 
-        <AddListOfTodos />
+        <div className='flex w-full gap-2'>
+          <AddListOfTodos />
+          <SearchListOfTodos />
+        </div>
 
         <ListOfTodosFeed />
       </main>

@@ -27,7 +27,7 @@ const AddListOfTodosView = ({
     />
   ) : (
     <Button
-      className='justify-center h-10 font-bold text-white rounded-lg bg-violet-600'
+      className='justify-center w-full h-10 font-bold text-white rounded-lg bg-violet-600'
       onClick={changeEditState}
     >
       <AddIcon className='w-4 h-4' />

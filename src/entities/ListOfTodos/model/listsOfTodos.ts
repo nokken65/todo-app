@@ -1,10 +1,4 @@
-import {
-  attach,
-  createEffect,
-  createEvent,
-  createStore,
-  forward,
-} from 'effector';
+import { attach, createEffect, createEvent, createStore } from 'effector';
 
 import { dateModel } from '~/entities/Date';
 import type { TodoList } from '~/shared/types';
@@ -15,8 +9,8 @@ import { GetListOfTodosInputs } from './model';
 const getListsOfTodosOriginalFx = createEffect<
   GetListOfTodosInputs,
   TodoList[]
->(async ({ date }) => {
-  const { data, error } = await getListsOfTodos({ date });
+>(async ({ date, filterByLabel }) => {
+  const { data, error } = await getListsOfTodos({ date, filterByLabel });
 
   if (error) {
     throw error;
@@ -28,15 +22,16 @@ const getListsOfTodosOriginalFx = createEffect<
 const getListsOfTodosFx = attach({
   effect: getListsOfTodosOriginalFx,
   source: dateModel.selectors.$selectedDate,
-  mapParams: (_, selectedDate) => ({
+  mapParams: (props: Omit<GetListOfTodosInputs, 'date'>, selectedDate) => ({
     date: selectedDate,
+    ...props,
   }),
 });
 
-forward({
-  from: dateModel.selectors.$selectedDate,
-  to: getListsOfTodosFx,
-});
+// forward({
+//   from: dateModel.selectors.$selectedDate,
+//   to: getListsOfTodosFx,
+// });
 
 const upsertListOfTodos = createEvent<TodoList>();
 const updateListOfTodos = createEvent<TodoList>();

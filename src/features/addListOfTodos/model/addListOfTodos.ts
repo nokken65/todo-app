@@ -7,13 +7,19 @@ import {
 } from 'effector';
 
 import { dateModel } from '~/entities/Date';
-import { AddListOfTodosInputs, listOfTodosModel } from '~/entities/ListOfTodos';
-import { addListOfTodos } from '~/entities/ListOfTodos/api';
+import {
+  AddListOfTodosInputs,
+  listOfTodosApi,
+  listOfTodosModel,
+} from '~/entities/ListOfTodos';
 import type { TodoList } from '~/shared/types';
 
 const addListOfTodosOriginalFx = createEffect<AddListOfTodosInputs, TodoList>(
   async ({ date, label }) => {
-    const { data, error } = await addListOfTodos({ date, label });
+    const { data, error } = await listOfTodosApi.addListOfTodos({
+      date,
+      label,
+    });
 
     if (error) {
       throw error;
@@ -30,7 +36,7 @@ const addListOfTodosOriginalFx = createEffect<AddListOfTodosInputs, TodoList>(
 const addListOfTodosFx = attach({
   effect: addListOfTodosOriginalFx,
   source: dateModel.selectors.$selectedDate,
-  mapParams: ({ label }, selectedDate) => ({
+  mapParams: ({ label }: Pick<TodoList, 'label'>, selectedDate) => ({
     date: selectedDate,
     label,
   }),

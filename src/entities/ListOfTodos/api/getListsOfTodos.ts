@@ -8,6 +8,7 @@ type GetListsOfTodosProps = GetListOfTodosInputs;
 
 export const getListsOfTodos = async ({
   date,
+  filterByLabel,
 }: GetListsOfTodosProps): Promise<{
   data: TodoList[] | null;
   error: Error | null;
@@ -18,6 +19,7 @@ export const getListsOfTodos = async ({
     .from<TodoList>('todo_lists')
     .select('*')
     .eq('date', convertedDate)
+    .filter('label', 'ilike', `%${filterByLabel ?? ''}%`)
     .order('created_at', { ascending: false });
 
   return { data, error: error ? new Error(error.message) : null };
