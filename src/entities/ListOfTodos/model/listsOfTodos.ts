@@ -23,7 +23,7 @@ const getListsOfTodosFx = attach({
   effect: getListsOfTodosOriginalFx,
   source: dateModel.selectors.$selectedDate,
   mapParams: (
-    props: NullableOptional<Omit<GetListOfTodosInputs, 'date'>>,
+    props: NullableOptional<Omit<GetListOfTodosInputs, 'date'>> | null,
     selectedDate,
   ) => ({
     date: selectedDate,
