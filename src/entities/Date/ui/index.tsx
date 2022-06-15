@@ -26,7 +26,7 @@ const DateCardView = ({
   return (
     <Button
       className={clsx(
-        'flex-col w-16 h-16 bg-gray-pale text-gray-light justify-center gap-0 select-none font-normal',
+        'flex-col w-16 h-16 bg-gray-pale text-gray-light justify-center gap-0 select-none font-normal rounded-lg',
         isCurrent && !isSelected && 'text-gray bg-green-pale',
         isSelected && '!text-white !bg-violet',
       )}

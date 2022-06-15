@@ -1,10 +1,12 @@
 import clsx from 'clsx';
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes, ReactNode } from 'react';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   isValid?: boolean;
   isError?: boolean;
   isSubmitting?: boolean;
+  before?: ReactNode;
+  after?: ReactNode;
 };
 
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
@@ -14,22 +16,30 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       isError = false,
       isSubmitting = false,
       className,
+      before,
+      after,
       ...props
     },
     ref,
   ) => {
     return (
-      <input
+      <div
         className={clsx(
-          'w-full h-full focus-within:outline-4 focus-within:outline focus-within:outline-blue-200 placeholder:text-gray-300 pl-2 pr-2 border-2 rounded-lg text-lg border-gray-300',
-          isValid && 'border-teal-300',
+          'flex w-full overflow-hidden text-lg bg-white border-2 border-gray-300 rounded-lg focus-within:outline focus-within:outline-4 focus-within:outline-blue-200',
+          isValid && 'border-violet-600',
           isError && 'border-red-300',
           className,
         )}
-        disabled={isSubmitting}
-        ref={ref}
-        {...props}
-      />
+      >
+        {before}
+        <input
+          className='w-full h-full pl-2 pr-2 placeholder:text-gray-300 focus-within:outline-none'
+          disabled={isSubmitting}
+          ref={ref}
+          {...props}
+        />
+        {after}
+      </div>
     );
   },
 );

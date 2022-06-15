@@ -16,7 +16,7 @@ export const ListOfTodosLabel = ({
   return (
     <>
       {!isEdit && (
-        <Heading className='break-words' type='h2'>
+        <Heading capitalize={false} className='break-words' type='h2'>
           {label}
         </Heading>
       )}
