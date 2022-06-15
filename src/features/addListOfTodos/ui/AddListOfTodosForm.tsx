@@ -1,7 +1,7 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { AddListOfTodosInputs } from '~/entities/ListOfTodos';
@@ -12,17 +12,21 @@ import { effects } from '../model';
 import { addListOfTodosSchema } from '../validation';
 
 type AddListOfTodosFormProps = {
+  closeButton?: ReactNode;
   onSubmit: (props: Pick<AddListOfTodosInputs, 'label'>) => void;
 };
 
-const AddListOfTodosFormView = ({ onSubmit }: AddListOfTodosFormProps) => {
+const AddListOfTodosFormView = ({
+  closeButton,
+  onSubmit,
+}: AddListOfTodosFormProps) => {
   const {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Pick<AddListOfTodosInputs, 'label'>>({
-    mode: 'all',
+    mode: 'onChange',
     resolver: yupResolver(addListOfTodosSchema),
     defaultValues: { label: '' },
   });
@@ -41,29 +45,33 @@ const AddListOfTodosFormView = ({ onSubmit }: AddListOfTodosFormProps) => {
           control={control}
           defaultValue=''
           name='label'
-          render={({ field }) => (
+          render={({ field, formState }) => (
             <Form.InputField
               autoFocus
               className='h-10'
-              isError={!!errors.label}
-              isSubmitting={isSubmitting}
-              isValid={isValid}
+              isError={!!formState.errors.label}
+              isSubmitting={formState.isSubmitting}
+              isValid={formState.isValid}
               placeholder='At work'
               type='text'
               {...field}
+              after={
+                <Button
+                  className={clsx(
+                    'justify-center w-10 text-white bg-violet-600 rounded-none',
+                    formState.isSubmitting && 'animate-pulse',
+                  )}
+                  disabled={!formState.isValid}
+                  type='submit'
+                >
+                  <AddIcon className='w-4 h-4' />
+                </Button>
+              }
+              before={closeButton}
+              value={field.value?.replace(/\s+/g, ' ')}
             />
           )}
         />
-        <Button
-          className={clsx(
-            'justify-center w-10 text-white bg-violet-600',
-            isSubmitting && 'animate-pulse',
-          )}
-          disabled={!isValid}
-          type='submit'
-        >
-          <AddIcon className='w-4 h-4' />
-        </Button>
       </div>
       {errors.label && <Form.ErrorFeedback message={errors.label.message} />}
     </form>

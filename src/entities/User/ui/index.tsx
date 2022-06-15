@@ -1,6 +1,9 @@
 import { reflect } from '@effector/reflect';
+import Popover, {
+  PopoverPlacement,
+  PopoverTriggerType,
+} from '@idui/react-popover';
 import type { User as UserType } from '@supabase/supabase-js';
-import { useState } from 'react';
 
 import { signOut } from '~/shared/api';
 import { Button, Typography } from '~/shared/components';
@@ -12,43 +15,44 @@ type UserProps = {
 };
 
 const UserView = ({ user }: UserProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   return (
     user && (
       <div className='relative'>
-        <Button
-          className='flex items-center gap-2 p-0 cursor-pointer'
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <Typography bold>{user.user_metadata.name}</Typography>
-          <img
-            alt='user avatar'
-            className='w-10 rounded-full'
-            src={user.user_metadata.avatar_url}
-          />
-        </Button>
-        {isExpanded && (
-          <ul className='absolute left-0 z-10 flex flex-col w-full mt-2 overflow-hidden rounded-lg bg-gray-pale top-full'>
-            <li>
-              <Button className='justify-center w-full rounded-none hover:bg-violet hover:text-white'>
-                <Typography bold className='w-full' size='sm'>
-                  Settings
-                </Typography>
+        <Popover
+          closeOnEnter
+          closeOnEscape
+          closeOnRemoteClick
+          closeOnScroll
+          className='!rounded-lg !p-0 !overflow-hidden !whitespace-nowrap font-bold'
+          content={
+            <>
+              <Button className='justify-center w-full p-4 rounded-none hover:bg-violet hover:text-white'>
+                Settings
               </Button>
-            </li>
-            <li>
               <Button
-                className='justify-center w-full rounded-none hover:bg-violet hover:text-white'
+                className='justify-center w-full p-4 rounded-none hover:bg-violet hover:text-white'
                 onClick={signOut}
               >
-                <Typography bold className='w-full' size='sm'>
-                  Sign Out
-                </Typography>
+                Sign Out
               </Button>
-            </li>
-          </ul>
-        )}
+            </>
+          }
+          offset={[0, -5]}
+          placement={PopoverPlacement.bottomRight}
+          trigger={PopoverTriggerType.hover}
+          withArrow={false}
+        >
+          <Button className='flex items-center gap-2 p-0 cursor-pointer'>
+            <Typography bold>{user.user_metadata.name}</Typography>
+            <img
+              alt='user avatar'
+              className='rounded-full'
+              height={40}
+              src={user.user_metadata.avatar_url}
+              width={40}
+            />
+          </Button>
+        </Popover>
       </div>
     )
   );

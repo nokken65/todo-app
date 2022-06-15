@@ -15,18 +15,19 @@ const AddListOfTodosView = ({
   changeEditState,
 }: AddListOfTodosProps) => {
   return isEdit ? (
-    <div className='flex items-start gap-2'>
-      <Button
-        className='justify-center w-10 h-10 fill-white bg-violet'
-        onClick={changeEditState}
-      >
-        <ArrowIcon className='w-4 h-4' direction='left' />
-      </Button>
-      <AddListOfTodosForm />
-    </div>
+    <AddListOfTodosForm
+      closeButton={
+        <Button
+          className='justify-center w-10 h-full fill-white bg-violet'
+          onClick={changeEditState}
+        >
+          <ArrowIcon className='w-4 h-4' direction='left' />
+        </Button>
+      }
+    />
   ) : (
     <Button
-      className='justify-center h-10 font-bold text-white bg-violet-600'
+      className='justify-center w-full h-10 font-bold text-white rounded-lg bg-violet-600'
       onClick={changeEditState}
     >
       <AddIcon className='w-4 h-4' />

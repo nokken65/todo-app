@@ -27,7 +27,7 @@ const UpdateLabelListOfTodosFormView = ({
     handleSubmit,
     reset,
     control,
-    formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Pick<UpdateListOfTodosInputs, 'label'>>({
     mode: 'all',
     resolver: yupResolver(updateLabelListOfTodosSchema),
@@ -42,34 +42,41 @@ const UpdateLabelListOfTodosFormView = ({
     <form
       className='flex flex-col w-full h-full gap-2'
       onSubmit={handleSubmit((data) =>
-        data.label === label ? onClose() : onSubmit({ ...data, id }),
+        // eslint-disable-next-line no-nested-ternary
+        data.label === label
+          ? onClose()
+          : data.label
+          ? onSubmit({ ...data, id })
+          : onClose(),
       )}
     >
       <div className='flex w-full h-full gap-2'>
-        <Button
-          className={clsx(
-            'justify-center w-10 h-10 text-white bg-violet-600',
-            isSubmitting && 'animate-pulse',
-          )}
-          disabled={!isValid}
-          type='submit'
-        >
-          <EditIcon className='w-4 h-4' />
-        </Button>
         <Controller
           control={control}
-          defaultValue=''
           name='label'
-          render={({ field }) => (
+          render={({ field, formState }) => (
             <Form.InputField
               autoFocus
+              before={
+                <Button
+                  className={clsx(
+                    'justify-center w-10 h-full text-white bg-violet-600',
+                    formState.isSubmitting && 'animate-pulse',
+                  )}
+                  disabled={!formState.isValid}
+                  type='submit'
+                >
+                  <EditIcon className='w-5 h-5' />
+                </Button>
+              }
               className='h-10 max-w-xs'
-              isError={!!errors.label}
-              isSubmitting={isSubmitting}
-              isValid={isValid}
+              isError={!!formState.errors.label}
+              isSubmitting={formState.isSubmitting}
+              isValid={formState.isValid}
               placeholder='At work'
               type='text'
               {...field}
+              value={field.value?.replace(/\s+/g, ' ')}
             />
           )}
         />
