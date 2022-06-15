@@ -23,18 +23,13 @@ const getListsOfTodosFx = attach({
   effect: getListsOfTodosOriginalFx,
   source: dateModel.selectors.$selectedDate,
   mapParams: (
-    props: NullableOptional<Omit<GetListOfTodosInputs, 'date'>> | null,
-    selectedDate,
+    props: NullableOptional<Omit<GetListOfTodosInputs, 'date'>>,
+    date,
   ) => ({
-    date: selectedDate,
+    date,
     ...props,
   }),
 });
-
-// forward({
-//   from: dateModel.selectors.$selectedDate,
-//   to: getListsOfTodosFx,
-// });
 
 const upsertListOfTodos = createEvent<TodoList>();
 const updateListOfTodos = createEvent<TodoList>();

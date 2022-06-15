@@ -1,4 +1,4 @@
-import { createEvent, createStore, sample } from 'effector';
+import { combine, createEvent, createStore } from 'effector';
 
 import { timestampToDate } from '~/shared/utils';
 
@@ -11,10 +11,10 @@ const $selectedDate = createStore<string>(timestampToDate(new Date())).on(
 
 const $currentDate = createStore<string>(timestampToDate(new Date()));
 
-const $selectedDateIsCurrent = sample({
-  source: [$selectedDate, $currentDate],
-  fn: ([selected, current]) => selected === current,
-});
+const $selectedDateIsCurrent = combine(
+  [$selectedDate, $currentDate],
+  ([selected, current]) => selected === current,
+);
 
 export const selectors = {
   $selectedDate,

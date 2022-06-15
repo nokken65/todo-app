@@ -81,6 +81,7 @@
       "files": [
         "./src/pages/*/index.tsx",
         "./src/pages/*.tsx",
+        "./src/pages/**/*.tsx",
         "./src/pages/**/pages/**/index.tsx",
         "./*.ts"
       ],
