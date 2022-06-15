@@ -1,26 +1,24 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
 import clsx from 'clsx';
-import { ReactNode, useRef } from 'react';
+import { ReactNode } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button, Form } from '~/shared/components';
 import { AddIcon, SearchIcon } from '~/shared/icons';
 import { TodoList } from '~/shared/types';
 
-import { effects, events } from '../model';
+import { effects } from '../model';
 import { searchListOfTodosSchema } from '../validation';
 
 type SearchListOfTodosFormProps = {
   closeButton?: ReactNode;
   onSubmit: (props: Pick<TodoList, 'label'>) => void;
-  onClose: () => void;
 };
 
 const SearchListOfTodosFormView = ({
   closeButton,
   onSubmit,
-  onClose,
 }: SearchListOfTodosFormProps) => {
   const {
     handleSubmit,
@@ -89,6 +87,5 @@ export const SearchListOfTodosForm = reflect({
   view: SearchListOfTodosFormView,
   bind: {
     onSubmit: effects.searchListOfTodosFx,
-    onClose: events.changeSearchState,
   },
 });
