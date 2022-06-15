@@ -25,6 +25,9 @@ module.exports = {
         90: '90%',
         95: '95%',
       },
+      animation: {
+        'spin-fast': 'spin 0.5s linear infinite',
+      },
     },
   },
   darkMode: 'class',

@@ -1,20 +1,19 @@
+import { Outlet } from 'react-router-dom';
+
 import { DatePicker } from '~/features/pickDate';
 import { DateTime, Heading, ProgressBar } from '~/shared/components';
 import { AddListOfTodos } from '~/widgets/AddListOfTodos';
 import { Header } from '~/widgets/Header';
-import { ListOfTodosFeed } from '~/widgets/ListOfTodosFeed';
 import { SearchListOfTodos } from '~/widgets/SearchListOfTodos';
 
 const FeedRoute = () => {
   return (
-    <div className='flex flex-col gap-6 p-6'>
+    <div className='flex flex-col h-full min-h-screen gap-6 p-6'>
       <Header />
-      <main className='flex flex-col gap-6'>
-        <div className='flex flex-col items-start gap-3'>
-          <Heading>
-            The Grind includes <DateTime.CutrrentWeek />
-          </Heading>
-        </div>
+      <main className='flex flex-col h-full gap-6 grow'>
+        <Heading>
+          The Grind includes <DateTime.CutrrentWeek />
+        </Heading>
         <ProgressBar value={70} />
 
         <DatePicker />
@@ -23,8 +22,7 @@ const FeedRoute = () => {
           <AddListOfTodos />
           <SearchListOfTodos />
         </div>
-
-        <ListOfTodosFeed />
+        <Outlet />
       </main>
     </div>
   );

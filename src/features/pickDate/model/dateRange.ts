@@ -2,6 +2,7 @@ import { addDays } from 'date-fns';
 import { createEvent, createStore, forward } from 'effector';
 
 import { dateModel } from '~/entities/Date';
+import { listOfTodosModel } from '~/entities/ListOfTodos';
 import { timestampToDate } from '~/shared/utils';
 
 const updateDateRange = createEvent<string>();
@@ -23,6 +24,13 @@ const $dateRange = createStore<string[]>([]).on(
 forward({
   from: dateModel.selectors.$selectedDate,
   to: updateDateRange,
+});
+
+forward({
+  // TODO: fix thix
+  // @ts-ignore
+  from: updateDateRange,
+  to: listOfTodosModel.effects.getListsOfTodosFx,
 });
 
 export const selectors = {

@@ -22,7 +22,7 @@ const ListOfTodosActionsPopoverView = ({
       closeOnEscape
       closeOnRemoteClick
       closeOnScroll
-      className='rounded-lg !p-0 !overflow-hidden'
+      className='!rounded-lg !p-0 !overflow-hidden'
       content={
         <div className='flex flex-col'>
           {actions.map((action) => (

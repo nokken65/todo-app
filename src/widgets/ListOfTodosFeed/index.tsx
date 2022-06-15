@@ -4,6 +4,7 @@ import { combine } from 'effector';
 import {
   ListOfTodosActionsPopover,
   ListOfTodosCard,
+  ListOfTodosEmpty,
   ListOfTodosLabel,
   listOfTodosModel,
 } from '~/entities/ListOfTodos';
@@ -13,6 +14,7 @@ import {
   updateListOfTodosModel,
 } from '~/features/updateListOfTodos';
 import { Typography } from '~/shared/components';
+import { LoaderRingIcon } from '~/shared/icons';
 import type { TodoList } from '~/shared/types';
 
 type ListOfTodosItemProps = {
@@ -90,6 +92,12 @@ const ListOfTodosList = list({
   getKey: ({ id }) => id,
 });
 
+const ListOfTodosWrapper = () => (
+  <ul className='flex flex-col h-full gap-4'>
+    <ListOfTodosList />
+  </ul>
+);
+
 const ListOfTodosFeedContent = variant({
   source: combine(
     {
@@ -104,19 +112,19 @@ const ListOfTodosFeedContent = variant({
     },
   ),
   cases: {
-    loading: () => <span>Loading...</span>,
-    empty: () => <span>Empty :(</span>,
-    ready: ListOfTodosList,
+    loading: () => (
+      <div className='flex items-center justify-center w-full h-full grow'>
+        <LoaderRingIcon className='w-20 h-20 animate-spin-fast' />
+      </div>
+    ),
+    empty: () => <ListOfTodosEmpty />,
+    ready: ListOfTodosWrapper,
   },
   hooks: {
-    mounted: listOfTodosModel.effects.getListsOfTodosFx.prepend(() => null),
+    mounted: listOfTodosModel.effects.getListsOfTodosFx.prepend(() => ({})),
   },
 });
 
 export const ListOfTodosFeed = () => {
-  return (
-    <ul className='flex flex-col gap-4'>
-      <ListOfTodosFeedContent />
-    </ul>
-  );
+  return <ListOfTodosFeedContent />;
 };
