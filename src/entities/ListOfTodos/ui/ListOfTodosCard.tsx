@@ -3,7 +3,7 @@ import { PropsWithChildren, ReactNode } from 'react';
 import { Card } from '~/shared/components';
 
 type ListOfTodosProps = PropsWithChildren<{
-  label: ReactNode;
+  label?: ReactNode;
   headerExtend?: ReactNode;
   isDisabled?: boolean;
 }>;

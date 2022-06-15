@@ -2,54 +2,66 @@ import { list, variant } from '@effector/reflect';
 import { combine } from 'effector';
 
 import {
-  HeaderExtendPopover,
+  ListOfTodosActionsPopover,
   ListOfTodosCard,
+  ListOfTodosLabel,
   listOfTodosModel,
 } from '~/entities/ListOfTodos';
+import { deleteListOfTodosModel } from '~/features/deleteListOfTodos';
 import {
-  DeleteListOfTodosButton,
-  deleteListOfTodosModel,
-} from '~/features/deleteListOfTodos';
-import {
-  UpdateLabelListOfTodosButton,
   UpdateLabelListOfTodosForm,
   updateListOfTodosModel,
 } from '~/features/updateListOfTodos';
-import { Heading, Typography } from '~/shared/components';
+import { Typography } from '~/shared/components';
 import type { TodoList } from '~/shared/types';
 
 type ListOfTodosItemProps = {
   listOfTodos: TodoList;
   listLabelBeingUpdated: string | null;
   listsBeingDeleted: string[];
+  onEditListLabel: (props: Pick<TodoList, 'id'>) => void;
+  onDeleteList: (props: Pick<TodoList, 'id'>) => void;
 };
 
 const ListOfTodosItemView = ({
   listOfTodos,
   listLabelBeingUpdated,
   listsBeingDeleted,
+  onEditListLabel,
+  onDeleteList,
 }: ListOfTodosItemProps) => {
   return (
     <li>
       <ListOfTodosCard
         headerExtend={
-          <HeaderExtendPopover>
-            <UpdateLabelListOfTodosButton id={listOfTodos.id} />
-            <DeleteListOfTodosButton id={listOfTodos.id} />
-          </HeaderExtendPopover>
+          <ListOfTodosActionsPopover
+            actions={[
+              {
+                name: 'editLabelList',
+                content: 'Edit',
+                onAction: () => onEditListLabel({ id: listOfTodos.id }),
+              },
+              {
+                name: 'deleteList',
+                content: 'Delete',
+                className: 'text-red-500',
+                onAction: () => onDeleteList({ id: listOfTodos.id }),
+              },
+            ]}
+          />
         }
         isDisabled={listsBeingDeleted.includes(listOfTodos.id)}
         label={
-          listLabelBeingUpdated === listOfTodos.id ? (
-            <UpdateLabelListOfTodosForm
-              id={listOfTodos.id}
-              label={listOfTodos.label}
-            />
-          ) : (
-            <Heading className='break-words' type='h2'>
-              {listOfTodos.label}
-            </Heading>
-          )
+          <ListOfTodosLabel
+            form={
+              <UpdateLabelListOfTodosForm
+                id={listOfTodos.id}
+                label={listOfTodos.label}
+              />
+            }
+            isEdit={listLabelBeingUpdated === listOfTodos.id}
+            label={listOfTodos.label}
+          />
         }
       >
         <Typography>
@@ -69,6 +81,8 @@ const ListOfTodosList = list({
       deleteListOfTodosModel.selectors.$listsOfTodosBeingDeleted,
     listLabelBeingUpdated:
       updateListOfTodosModel.selectors.$listOfTodosBeingUpdated,
+    onEditListLabel: updateListOfTodosModel.events.setListOfTodosBeingUpdated,
+    onDeleteList: deleteListOfTodosModel.events.deleteListOfTodos,
   },
   mapItem: {
     listOfTodos: (_list) => _list,
