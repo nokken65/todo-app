@@ -27,6 +27,8 @@ forward({
 });
 
 forward({
+  // TODO: fix thix
+  // @ts-ignore
   from: updateDateRange,
   to: listOfTodosModel.effects.getListsOfTodosFx,
 });
