@@ -1,7 +1,7 @@
 import { attach, createEffect, createEvent, createStore } from 'effector';
 
 import { dateModel } from '~/entities/Date';
-import type { TodoList } from '~/shared/types';
+import type { NullableOptional, TodoList } from '~/shared/types';
 
 import { getListsOfTodos } from '../api';
 import { GetListOfTodosInputs } from './model';
@@ -22,7 +22,10 @@ const getListsOfTodosOriginalFx = createEffect<
 const getListsOfTodosFx = attach({
   effect: getListsOfTodosOriginalFx,
   source: dateModel.selectors.$selectedDate,
-  mapParams: (props: Omit<GetListOfTodosInputs, 'date'>, selectedDate) => ({
+  mapParams: (
+    props: NullableOptional<Omit<GetListOfTodosInputs, 'date'>>,
+    selectedDate,
+  ) => ({
     date: selectedDate,
     ...props,
   }),
