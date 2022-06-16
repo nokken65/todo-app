@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { ReactNode } from 'react';
 import {
   Controller,
@@ -6,20 +7,20 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import { Form, InputFieldProps } from '../components';
+import { InputField, InputFieldProps } from '~/shared/components';
 
-type ReactHookFormFieldProps = Omit<InputFieldProps, 'name'> & {
+export type FieldProps = Omit<InputFieldProps, 'name'> & {
   name: FieldPath<FieldValues>;
   label?: ReactNode;
   requiredStar?: boolean;
 };
 
-export const ReactHookFormField = ({
+export const Field = ({
   name,
   label,
   requiredStar = false,
   ...props
-}: ReactHookFormFieldProps) => {
+}: FieldProps) => {
   const { control } = useFormContext();
 
   return (
@@ -27,15 +28,15 @@ export const ReactHookFormField = ({
       control={control}
       name={name}
       render={({ field, fieldState, formState }) => (
-        <div className='flex flex-col gap-2 relative'>
+        <div className='relative flex flex-col gap-2'>
           {label && (
             <label className='text-sm text-gray-400 ' htmlFor={name}>
               {label}
               {requiredStar && <sup>*</sup>}
             </label>
           )}
-          <Form.InputField
-            className='h-10'
+          <InputField
+            className={clsx('h-10', props.className)}
             errorMessage={fieldState.error?.message}
             id={name}
             isSubmitting={formState.isSubmitting}

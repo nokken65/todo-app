@@ -18,7 +18,7 @@ const AddListOfTodosView = ({
     <AddListOfTodosForm
       closeButton={
         <Button
-          className='justify-center w-10 h-full fill-white bg-violet'
+          className='justify-center w-10 h-full text-white bg-violet'
           onClick={changeEditState}
         >
           <ArrowIcon className='w-4 h-4' direction='left' />

@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import { SocialButton } from '~/shared/types';
 
-import { Button } from '../../Button';
+import { Button } from '../../Button/Button';
 import { Typography } from '../../Typography';
 
 type SignInButtonsProps = {

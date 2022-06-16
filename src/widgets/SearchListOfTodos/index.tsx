@@ -20,7 +20,7 @@ const SearchListOfTodosView = ({
     <SearchListOfTodosForm
       closeButton={
         <Button
-          className='justify-center h-full w-9 shrink-0 fill-white bg-violet'
+          className='justify-center h-full text-white w-9 shrink-0 bg-violet'
           onClick={changeSearchState}
         >
           <ArrowIcon className='w-4 h-4' direction='left' />

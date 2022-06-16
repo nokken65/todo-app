@@ -27,7 +27,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
     const [isFocused, setIsFocused] = useState<boolean>(false);
 
     return (
-      <div className='relative'>
+      <div className='relative w-full h-full'>
         <div
           className={clsx(
             'flex w-full overflow-hidden text-lg bg-white border-2 border-gray-300 rounded-lg focus-within:outline focus-within:outline-4 focus-within:outline-blue-200',

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ButtonHTMLAttributes, forwardRef, memo } from 'react';
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {};
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {};
 
 const ButtonView = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, className, ...props }, ref) => {

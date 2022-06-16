@@ -16,7 +16,7 @@ export const ListOfTodosCard = ({
 }: ListOfTodosProps) => {
   return (
     <Card className={isDisabled && 'pointer-events-none blur-sm'}>
-      <div className='flex items-start justify-between gap-2'>
+      <div className='flex items-center justify-between gap-2'>
         {label}
         {headerExtend}
       </div>
