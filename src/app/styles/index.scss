@@ -5,11 +5,15 @@
 @layer base {
   html {
     font-size: 16px;
-    color: theme('colors.gray.DEFAULT');
+    color: theme('colors.gray.600');
   }
 
   body {
     @apply bg-white dark:bg-gray;
+  }
+
+  #root {
+    @apply max-w-screen w-full h-full;
   }
 
   li {
@@ -23,6 +27,21 @@
     scrollbar-width: none; /* Firefox */
     &::-webkit-scrollbar {
       display: none;
+    }
+  }
+
+  .tooltip {
+    @apply p-2 pl-4 pr-4 border border-red-300 relative bg-white shadow-md rounded-lg mb-2;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      bottom: -10px;
+      left: 10%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: theme('colors.red.300') transparent transparent transparent;
     }
   }
 }

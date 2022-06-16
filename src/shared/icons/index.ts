@@ -5,6 +5,7 @@ export * from './EditIcon';
 export * from './GithubIcon';
 export * from './GitlabIcon';
 export * from './GoogleIcon';
+export * from './HideIcon';
 export * from './LoaderRingIcon';
 export * from './MoreIcon';
 export * from './OpenedBoxIcon';

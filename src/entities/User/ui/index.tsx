@@ -5,16 +5,16 @@ import Popover, {
 } from '@idui/react-popover';
 import type { User as UserType } from '@supabase/supabase-js';
 
-import { signOut } from '~/shared/api';
 import { Button, Typography } from '~/shared/components';
 
 import { selectors } from '../model';
 
 type UserProps = {
   user: UserType | null;
+  signOut: () => void;
 };
 
-const UserView = ({ user }: UserProps) => {
+const UserView = ({ user, signOut }: UserProps) => {
   return (
     user && (
       <div className='relative'>

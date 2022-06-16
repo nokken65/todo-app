@@ -5,9 +5,13 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { userModel } from '~/entities/User';
 import { ROUTE_PATHS } from '~/shared/constants';
 
+import { SignInActionButtonRoute } from './Welcome/SignInRoute';
+
+const WelcomeRoute = lazy(() => import('./Welcome'));
+const SignInRoute = lazy(() => import('./Welcome/SignInRoute'));
+
 const FeedRoute = lazy(() => import('./Feed'));
 const TodoListsRoute = lazy(() => import('./Feed/TodoListsRoute'));
-const SignInRoute = lazy(() => import('./SignIn'));
 
 const Routing = () => {
   const user = useStore(userModel.selectors.$user);
@@ -25,8 +29,8 @@ const Routing = () => {
             </Route>
           </Route>
         ) : (
-          <Route path={ROUTE_PATHS.index}>
-            <Route index element={<Navigate to={ROUTE_PATHS.signin} />} />
+          <Route element={<WelcomeRoute />} path={ROUTE_PATHS.index}>
+            <Route index element={<SignInActionButtonRoute />} />
             <Route element={<SignInRoute />} path={ROUTE_PATHS.signin} />
           </Route>
         )}

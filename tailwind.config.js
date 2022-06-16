@@ -28,6 +28,9 @@ module.exports = {
       animation: {
         'spin-fast': 'spin 0.5s linear infinite',
       },
+      maxWidth: {
+        screen: '100vw',
+      },
     },
   },
   darkMode: 'class',

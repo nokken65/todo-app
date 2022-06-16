@@ -3,6 +3,5 @@ export const ROUTE_PATHS = {
   settings: '/settings',
   feed: '/feed',
   signin: '/signin',
-  signup: '/signup',
   comingsoon: '/coming_soon',
 };
