@@ -4,13 +4,13 @@ import { FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { Field } from './Field';
 
 type FormProps<TFormValues> = PropsWithChildren<{
-  resetOnSubmit?: boolean;
+  resetOnSubmitSuccessful?: boolean;
   onSubmit: SubmitHandler<TFormValues>;
 }> &
   UseFormReturn<TFormValues>;
 
 const Form = <TFormValues extends Record<string, any>>({
-  resetOnSubmit,
+  resetOnSubmitSuccessful,
   children,
   onSubmit,
   ...methods
@@ -21,10 +21,10 @@ const Form = <TFormValues extends Record<string, any>>({
   } = methods;
 
   useEffect(() => {
-    if (resetOnSubmit) {
+    if (resetOnSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful, reset, resetOnSubmit]);
+  }, [isSubmitSuccessful, reset, resetOnSubmitSuccessful]);
 
   return (
     <FormProvider {...methods}>

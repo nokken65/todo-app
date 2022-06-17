@@ -1,6 +1,5 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { UpdateListOfTodosInputs } from '~/entities/ListOfTodos';
@@ -29,18 +28,10 @@ const UpdateLabelListOfTodosFormView = ({
     defaultValues: { label: '' },
   });
 
-  const {
-    reset,
-    formState: { isSubmitting, isSubmitSuccessful },
-  } = methods;
-
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
   return (
     <Form
       {...methods}
+      resetOnSubmitSuccessful
       onSubmit={(data) =>
         // eslint-disable-next-line no-nested-ternary
         data.label === label
@@ -55,8 +46,8 @@ const UpdateLabelListOfTodosFormView = ({
         before={
           <ButtonWithLoader
             className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={isSubmitting}
-            isLoading={isSubmitting}
+            disabled={methods.formState.isSubmitting}
+            isLoading={methods.formState.isSubmitting}
             type='submit'
           >
             <EditIcon className='w-5 h-5' />

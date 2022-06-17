@@ -1,6 +1,5 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,18 +25,10 @@ const SignInWithEmailFormView = ({ onSubmit }: SignInWithEmailFormProps) => {
 
   const navigate = useNavigate();
 
-  const {
-    reset,
-    formState: { isSubmitSuccessful, isSubmitting },
-  } = methods;
-
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
   return (
     <Form
       {...methods}
+      resetOnSubmitSuccessful
       onSubmit={async (data) => {
         await onSubmit(data);
         navigate(ROUTE_PATHS.index);
@@ -48,8 +39,8 @@ const SignInWithEmailFormView = ({ onSubmit }: SignInWithEmailFormProps) => {
         after={
           <ButtonWithLoader
             className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={isSubmitting}
-            isLoading={isSubmitting}
+            disabled={methods.formState.isSubmitting}
+            isLoading={methods.formState.isSubmitting}
             type='submit'
           >
             <ArrowIcon className='w-4 h-4' direction='right' />

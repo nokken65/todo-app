@@ -1,6 +1,6 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { AddListOfTodosInputs } from '~/entities/ListOfTodos';
@@ -26,24 +26,15 @@ const AddListOfTodosFormView = ({
     defaultValues: { label: '' },
   });
 
-  const {
-    reset,
-    formState: { isSubmitSuccessful, isSubmitting },
-  } = methods;
-
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
   return (
-    <Form {...methods} onSubmit={onSubmit}>
+    <Form {...methods} resetOnSubmitSuccessful onSubmit={onSubmit}>
       <Form.Field
         autoFocus
         after={
           <ButtonWithLoader
             className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={isSubmitting}
-            isLoading={isSubmitting}
+            disabled={methods.formState.isSubmitting}
+            isLoading={methods.formState.isSubmitting}
             type='submit'
           >
             <AddIcon className='w-4 h-4' />

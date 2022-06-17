@@ -25,11 +25,28 @@ module.exports = {
         90: '90%',
         95: '95%',
       },
+      keyframes: {
+        expire: {
+          '0%': { width: '100%' },
+          '100%': { width: '0%' },
+        },
+      },
       animation: {
         'spin-fast': 'spin 0.5s linear infinite',
+        expire: 'expire linear',
       },
       maxWidth: {
         screen: '100vw',
+      },
+      maxHeight: {
+        md: '480px',
+      },
+      screens: {
+        '2xl': { max: '1535px' },
+        xl: { max: '1279px' },
+        lg: { max: '1023px' },
+        md: { max: '480px' },
+        xs: { max: '320px' },
       },
     },
   },

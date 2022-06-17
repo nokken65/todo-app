@@ -43,12 +43,18 @@ const UserView = ({ user, signOut }: UserProps) => {
           withArrow={false}
         >
           <Button className='flex items-center gap-2 p-0 cursor-pointer'>
-            <Typography bold>{user.user_metadata.name}</Typography>
+            <Typography bold>
+              {user.user_metadata.name ? user.user_metadata.name : 'User'}
+            </Typography>
             <img
               alt='user avatar'
               className='rounded-full'
               height={40}
-              src={user.user_metadata.avatar_url}
+              src={
+                user.user_metadata.avatar_url
+                  ? user.user_metadata.avatar_url
+                  : 'https://i.pravatar.cc/300'
+              }
               width={40}
             />
           </Button>

@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { userModel } from '~/entities/User';
 import { ROUTE_PATHS } from '~/shared/constants';
+import { LoaderRingIcon } from '~/shared/icons';
 
 import { SignInActionButtonRoute } from './Welcome/SignInRoute';
 
@@ -18,7 +19,13 @@ const Routing = () => {
   // const user = true;
 
   return (
-    <Suspense fallback={<>...</>}>
+    <Suspense
+      fallback={
+        <div className='w-full h-full min-h-screen flex justify-center items-center'>
+          <LoaderRingIcon className='animate-spin-fast' />
+        </div>
+      }
+    >
       <Routes>
         {/* TODO: remove blink signin page after auth */}
         {user ? (

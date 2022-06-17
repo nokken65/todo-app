@@ -31,7 +31,7 @@ const SearchListOfTodosFormView = ({
   } = methods;
 
   return (
-    <Form {...methods} onSubmit={onSubmit}>
+    <Form {...methods} resetOnSubmitSuccessful onSubmit={onSubmit}>
       <Form.Field
         after={
           <ButtonWithLoader
