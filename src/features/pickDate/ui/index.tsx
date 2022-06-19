@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import { DateCard, dateModel } from '~/entities/Date';
-import { useForceUpdate } from '~/shared/hooks';
 import { scrollIntoView } from '~/shared/utils';
 
 import { events, selectors } from '../model';
@@ -53,11 +52,11 @@ const DatePickerView = ({
         </>
       )}
       <ScrollContainer
-        innerRef={wrapperRef}
         hideScrollbars
         horizontal
         nativeMobileScroll
         className='flex gap-2'
+        innerRef={wrapperRef}
         vertical={false}
       >
         {dateRange.map((date) => {
