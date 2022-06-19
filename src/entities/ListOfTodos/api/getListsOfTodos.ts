@@ -1,6 +1,5 @@
 import { supabase } from '~/shared/api';
 import type { TodoList } from '~/shared/types';
-import { convertDateStringToPostgresStyle } from '~/shared/utils';
 
 import { GetListOfTodosInputs } from '../model/model';
 
@@ -13,14 +12,12 @@ export const getListsOfTodos = async ({
   data: TodoList[] | null;
   error: Error | null;
 }> => {
-  const convertedDate = convertDateStringToPostgresStyle(date);
-
   // TODO: double fetch on init load
 
   const { data, error } = await supabase
     .from<TodoList>('lists')
     .select('*, todos(*)')
-    .eq('date', convertedDate)
+    .eq('date', date)
     .ilike('label', filterByLabel ? `%${filterByLabel}%` : '*')
     .order('createdAt', { ascending: false });
 

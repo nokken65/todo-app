@@ -1,9 +1,8 @@
-import { addDays } from 'date-fns';
 import { createEvent, createStore, forward } from 'effector';
 
 import { dateModel } from '~/entities/Date';
 import { listOfTodosModel } from '~/entities/ListOfTodos';
-import { timestampToDate } from '~/shared/utils';
+import { addDays, format } from '~/shared/utils';
 
 const updateDateRange = createEvent<string>();
 
@@ -11,10 +10,10 @@ const $dateRange = createStore<string[]>([]).on(
   updateDateRange,
   (_event, currentDate) => {
     const prevDates = [...Array(14)]
-      .map((_, i) => timestampToDate(addDays(new Date(currentDate), -i - 1)))
+      .map((_, i) => format(addDays(new Date(currentDate), -i - 1)))
       .reverse();
     const nextDates = [...Array(14)].map((_, i) =>
-      timestampToDate(addDays(new Date(currentDate), i + 1)),
+      format(addDays(new Date(currentDate), i + 1)),
     );
 
     return [...prevDates, currentDate, ...nextDates];

@@ -1,5 +1,6 @@
 import { reflect } from '@effector/reflect';
-import { format } from 'date-fns';
+
+import { format } from '~/shared/utils';
 
 import { selectors } from '../model';
 
@@ -8,7 +9,7 @@ type DateGrindsHeadingProps = {
 };
 
 const DateGrindsHeadingView = ({ date }: DateGrindsHeadingProps) => {
-  const formattedDate = format(new Date(date), 'EEEE');
+  const formattedDate = format(new Date(date), { weekday: 'long' });
 
   return <span className='text-violet-500'>{formattedDate}</span>;
 };

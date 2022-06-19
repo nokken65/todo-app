@@ -1,6 +1,5 @@
 import { supabase } from '~/shared/api';
 import type { TodoList } from '~/shared/types';
-import { convertDateStringToPostgresStyle } from '~/shared/utils';
 
 import { AddListOfTodosInputs } from '../model/model';
 
@@ -19,11 +18,9 @@ export const addListOfTodos = async ({
     return { data: null, error: new Error('Cannot find user') };
   }
 
-  const convertedDate = convertDateStringToPostgresStyle(date);
-
   const { data, error } = await supabase
     .from<TodoList>('lists')
-    .insert({ date: convertedDate, label, userId: user.id })
+    .insert({ date, label, userId: user.id })
     .single();
 
   return { data, error: error ? new Error(error.message) : null };
