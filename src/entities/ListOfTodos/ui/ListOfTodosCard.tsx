@@ -1,4 +1,5 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import clsx from 'clsx';
+import { memo, PropsWithChildren, ReactNode } from 'react';
 
 import { Card } from '~/shared/components';
 
@@ -8,15 +9,15 @@ type ListOfTodosProps = PropsWithChildren<{
   isDisabled?: boolean;
 }>;
 
-export const ListOfTodosCard = ({
+const ListOfTodosCardView = ({
   label,
   headerExtend,
   isDisabled,
   children,
 }: ListOfTodosProps) => {
   return (
-    <Card className={isDisabled && 'pointer-events-none blur-sm'}>
-      <div className='flex items-start justify-between gap-2'>
+    <Card className={clsx(isDisabled && 'pointer-events-none blur-sm')}>
+      <div className='flex items-center justify-between gap-2'>
         {label}
         {headerExtend}
       </div>
@@ -24,3 +25,5 @@ export const ListOfTodosCard = ({
     </Card>
   );
 };
+
+export const ListOfTodosCard = memo(ListOfTodosCardView);

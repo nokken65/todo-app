@@ -8,14 +8,13 @@ type UpdateListOfTodosProps = UpdateListOfTodosInputs;
 export const updateListOfTodos = async ({
   id,
   label,
-  todo_ids,
 }: UpdateListOfTodosProps): Promise<{
   data: TodoList | null;
   error: Error | null;
 }> => {
   const { data, error } = await supabase
-    .from<TodoList>('todo_lists')
-    .update({ label, todo_ids })
+    .from<TodoList>('lists')
+    .update({ label })
     .eq('id', id)
     .single();
 

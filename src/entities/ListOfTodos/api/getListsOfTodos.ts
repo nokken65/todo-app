@@ -15,12 +15,18 @@ export const getListsOfTodos = async ({
 }> => {
   const convertedDate = convertDateStringToPostgresStyle(date);
 
-  const { data, error } = await supabase
-    .from<TodoList>('todo_lists')
-    .select('*')
-    .eq('date', convertedDate)
-    .filter('label', 'ilike', `%${filterByLabel ?? ''}%`)
-    .order('created_at', { ascending: false });
+  // TODO: double fetch on init load
 
-  return { data, error: error ? new Error(error.message) : null };
+  const { data, error } = await supabase
+    .from<TodoList>('lists')
+    .select('*, todos(*)')
+    .eq('date', convertedDate)
+    .ilike('label', filterByLabel ? `%${filterByLabel}%` : '*')
+    .order('createdAt', { ascending: false });
+
+  if (error) {
+    return { data: null, error: new Error(error.message) };
+  }
+
+  return { data, error: null };
 };

@@ -1,13 +1,14 @@
 import { memo } from 'react';
 
-import { User } from '~/entities/User';
-import { DateTime } from '~/shared/components';
+import { UserCompact } from '~/entities/User';
+import { authApi } from '~/features/auth';
+import { Logo } from '~/shared/components';
 
 const HeaderView = () => {
   return (
-    <header className='flex items-start justify-between'>
-      <DateTime.CutrrentDate />
-      <User />
+    <header className='flex items-center justify-between gap-4'>
+      <Logo />
+      <UserCompact signOut={authApi.signOut} />
     </header>
   );
 };

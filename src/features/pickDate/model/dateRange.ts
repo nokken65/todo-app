@@ -10,10 +10,10 @@ const updateDateRange = createEvent<string>();
 const $dateRange = createStore<string[]>([]).on(
   updateDateRange,
   (_event, currentDate) => {
-    const prevDates = [...Array(7)]
+    const prevDates = [...Array(14)]
       .map((_, i) => timestampToDate(addDays(new Date(currentDate), -i - 1)))
       .reverse();
-    const nextDates = [...Array(7)].map((_, i) =>
+    const nextDates = [...Array(14)].map((_, i) =>
       timestampToDate(addDays(new Date(currentDate), i + 1)),
     );
 

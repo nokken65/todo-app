@@ -1,7 +1,7 @@
 import './styles/index.scss';
 
 import { reflect } from '@effector/reflect';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { userModel } from '~/entities/User';
 import { Routing } from '~/pages';

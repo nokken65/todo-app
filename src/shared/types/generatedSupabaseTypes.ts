@@ -12,17 +12,16 @@ export type paths = {
       };
     };
   };
-  '/todo_lists': {
+  '/lists': {
     get: {
       parameters: {
         query: {
-          id?: parameters['rowFilter.todo_lists.id'];
-          created_at?: parameters['rowFilter.todo_lists.created_at'];
-          updated_at?: parameters['rowFilter.todo_lists.updated_at'];
-          user_id?: parameters['rowFilter.todo_lists.user_id'];
-          todo_ids?: parameters['rowFilter.todo_lists.todo_ids'];
-          label?: parameters['rowFilter.todo_lists.label'];
-          date?: parameters['rowFilter.todo_lists.date'];
+          id?: parameters['rowFilter.lists.id'];
+          userId?: parameters['rowFilter.lists.userId'];
+          label?: parameters['rowFilter.lists.label'];
+          date?: parameters['rowFilter.lists.date'];
+          createdAt?: parameters['rowFilter.lists.createdAt'];
+          updatedAt?: parameters['rowFilter.lists.updatedAt'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -44,7 +43,7 @@ export type paths = {
       responses: {
         /** OK */
         200: {
-          schema: definitions['todo_lists'][];
+          schema: definitions['lists'][];
         };
         /** Partial Content */
         206: unknown;
@@ -53,8 +52,8 @@ export type paths = {
     post: {
       parameters: {
         body: {
-          /** todo_lists */
-          todo_lists?: definitions['todo_lists'];
+          /** lists */
+          lists?: definitions['lists'];
         };
         query: {
           /** Filtering Columns */
@@ -73,13 +72,12 @@ export type paths = {
     delete: {
       parameters: {
         query: {
-          id?: parameters['rowFilter.todo_lists.id'];
-          created_at?: parameters['rowFilter.todo_lists.created_at'];
-          updated_at?: parameters['rowFilter.todo_lists.updated_at'];
-          user_id?: parameters['rowFilter.todo_lists.user_id'];
-          todo_ids?: parameters['rowFilter.todo_lists.todo_ids'];
-          label?: parameters['rowFilter.todo_lists.label'];
-          date?: parameters['rowFilter.todo_lists.date'];
+          id?: parameters['rowFilter.lists.id'];
+          userId?: parameters['rowFilter.lists.userId'];
+          label?: parameters['rowFilter.lists.label'];
+          date?: parameters['rowFilter.lists.date'];
+          createdAt?: parameters['rowFilter.lists.createdAt'];
+          updatedAt?: parameters['rowFilter.lists.updatedAt'];
         };
         header: {
           /** Preference */
@@ -94,17 +92,16 @@ export type paths = {
     patch: {
       parameters: {
         query: {
-          id?: parameters['rowFilter.todo_lists.id'];
-          created_at?: parameters['rowFilter.todo_lists.created_at'];
-          updated_at?: parameters['rowFilter.todo_lists.updated_at'];
-          user_id?: parameters['rowFilter.todo_lists.user_id'];
-          todo_ids?: parameters['rowFilter.todo_lists.todo_ids'];
-          label?: parameters['rowFilter.todo_lists.label'];
-          date?: parameters['rowFilter.todo_lists.date'];
+          id?: parameters['rowFilter.lists.id'];
+          userId?: parameters['rowFilter.lists.userId'];
+          label?: parameters['rowFilter.lists.label'];
+          date?: parameters['rowFilter.lists.date'];
+          createdAt?: parameters['rowFilter.lists.createdAt'];
+          updatedAt?: parameters['rowFilter.lists.updatedAt'];
         };
         body: {
-          /** todo_lists */
-          todo_lists?: definitions['todo_lists'];
+          /** lists */
+          lists?: definitions['lists'];
         };
         header: {
           /** Preference */
@@ -123,11 +120,11 @@ export type paths = {
         query: {
           id?: parameters['rowFilter.todos.id'];
           text?: parameters['rowFilter.todos.text'];
-          is_completed?: parameters['rowFilter.todos.is_completed'];
-          list_id?: parameters['rowFilter.todos.list_id'];
-          user_id?: parameters['rowFilter.todos.user_id'];
-          updated_at?: parameters['rowFilter.todos.updated_at'];
-          created_at?: parameters['rowFilter.todos.created_at'];
+          isComplete?: parameters['rowFilter.todos.isComplete'];
+          userId?: parameters['rowFilter.todos.userId'];
+          listId?: parameters['rowFilter.todos.listId'];
+          createdAt?: parameters['rowFilter.todos.createdAt'];
+          updatedAt?: parameters['rowFilter.todos.updatedAt'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -180,11 +177,11 @@ export type paths = {
         query: {
           id?: parameters['rowFilter.todos.id'];
           text?: parameters['rowFilter.todos.text'];
-          is_completed?: parameters['rowFilter.todos.is_completed'];
-          list_id?: parameters['rowFilter.todos.list_id'];
-          user_id?: parameters['rowFilter.todos.user_id'];
-          updated_at?: parameters['rowFilter.todos.updated_at'];
-          created_at?: parameters['rowFilter.todos.created_at'];
+          isComplete?: parameters['rowFilter.todos.isComplete'];
+          userId?: parameters['rowFilter.todos.userId'];
+          listId?: parameters['rowFilter.todos.listId'];
+          createdAt?: parameters['rowFilter.todos.createdAt'];
+          updatedAt?: parameters['rowFilter.todos.updatedAt'];
         };
         header: {
           /** Preference */
@@ -201,11 +198,11 @@ export type paths = {
         query: {
           id?: parameters['rowFilter.todos.id'];
           text?: parameters['rowFilter.todos.text'];
-          is_completed?: parameters['rowFilter.todos.is_completed'];
-          list_id?: parameters['rowFilter.todos.list_id'];
-          user_id?: parameters['rowFilter.todos.user_id'];
-          updated_at?: parameters['rowFilter.todos.updated_at'];
-          created_at?: parameters['rowFilter.todos.created_at'];
+          isComplete?: parameters['rowFilter.todos.isComplete'];
+          userId?: parameters['rowFilter.todos.userId'];
+          listId?: parameters['rowFilter.todos.listId'];
+          createdAt?: parameters['rowFilter.todos.createdAt'];
+          updatedAt?: parameters['rowFilter.todos.updatedAt'];
         };
         body: {
           /** todos */
@@ -225,7 +222,7 @@ export type paths = {
 };
 
 export type definitions = {
-  todo_lists: {
+  lists: {
     /**
      * Format: uuid
      * @description Note:
@@ -233,30 +230,26 @@ export type definitions = {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    updated_at: string;
     /** Format: uuid */
-    user_id: string;
-    /** Format: ARRAY */
-    todo_ids: unknown[];
+    userId: string;
     /** Format: text */
     label: string;
     /** Format: date */
     date: string;
+    /**
+     * Format: timestamp with time zone
+     * @default (now() AT TIME ZONE 'utc'::text)
+     */
+    createdAt: string;
+    /**
+     * Format: timestamp with time zone
+     * @default (now() AT TIME ZONE 'utc'::text)
+     */
+    updatedAt: string;
   };
   todos: {
     /**
      * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
      * @default extensions.uuid_generate_v4()
      */
     id: string;
@@ -266,21 +259,25 @@ export type definitions = {
      * Format: boolean
      * @default false
      */
-    is_completed: boolean;
+    isComplete?: boolean;
     /** Format: uuid */
-    list_id: string;
-    /** Format: uuid */
-    user_id: string;
+    userId: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `lists.id`.<fk table='lists' column='id'/>
+     */
+    listId: string;
     /**
      * Format: timestamp with time zone
-     * @default now()
+     * @default timezone('utc'::text, now())
      */
-    updated_at: string;
+    createdAt: string;
     /**
      * Format: timestamp with time zone
-     * @default now()
+     * @default timezone('utc'::text, now())
      */
-    created_at: string;
+    updatedAt: string;
   };
 };
 
@@ -317,22 +314,20 @@ export type parameters = {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description todo_lists */
-  'body.todo_lists': definitions['todo_lists'];
+  /** @description lists */
+  'body.lists': definitions['lists'];
   /** Format: uuid */
-  'rowFilter.todo_lists.id': string;
-  /** Format: timestamp with time zone */
-  'rowFilter.todo_lists.created_at': string;
-  /** Format: timestamp with time zone */
-  'rowFilter.todo_lists.updated_at': string;
+  'rowFilter.lists.id': string;
   /** Format: uuid */
-  'rowFilter.todo_lists.user_id': string;
-  /** Format: ARRAY */
-  'rowFilter.todo_lists.todo_ids': string;
+  'rowFilter.lists.userId': string;
   /** Format: text */
-  'rowFilter.todo_lists.label': string;
+  'rowFilter.lists.label': string;
   /** Format: date */
-  'rowFilter.todo_lists.date': string;
+  'rowFilter.lists.date': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.lists.createdAt': string;
+  /** Format: timestamp with time zone */
+  'rowFilter.lists.updatedAt': string;
   /** @description todos */
   'body.todos': definitions['todos'];
   /** Format: uuid */
@@ -340,15 +335,15 @@ export type parameters = {
   /** Format: text */
   'rowFilter.todos.text': string;
   /** Format: boolean */
-  'rowFilter.todos.is_completed': string;
+  'rowFilter.todos.isComplete': string;
   /** Format: uuid */
-  'rowFilter.todos.list_id': string;
+  'rowFilter.todos.userId': string;
   /** Format: uuid */
-  'rowFilter.todos.user_id': string;
+  'rowFilter.todos.listId': string;
   /** Format: timestamp with time zone */
-  'rowFilter.todos.updated_at': string;
+  'rowFilter.todos.createdAt': string;
   /** Format: timestamp with time zone */
-  'rowFilter.todos.created_at': string;
+  'rowFilter.todos.updatedAt': string;
 };
 
 export type operations = {};

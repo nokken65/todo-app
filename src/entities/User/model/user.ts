@@ -15,6 +15,8 @@ const $user = createStore<User | null>(null)
   .on(getUserFx.doneData, (_, payload) => payload)
   .on(setUser, (_, payload) => payload);
 
+const $isAuthorized = createStore<boolean>(!!supabase.auth.session());
+
 export const effects = {
   getUserFx,
 };
@@ -25,4 +27,5 @@ export const events = {
 
 export const selectors = {
   $user,
+  $isAuthorized,
 };

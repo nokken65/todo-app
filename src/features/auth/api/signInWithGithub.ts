@@ -1,4 +1,4 @@
-import { supabase } from '../client';
+import { supabase } from '~/shared/api';
 
 export const signInWithGithub = async () => {
   try {

@@ -12,6 +12,7 @@ import {
   listOfTodosApi,
   listOfTodosModel,
 } from '~/entities/ListOfTodos';
+import { notificationModel } from '~/entities/Notification';
 import type { TodoList } from '~/shared/types';
 
 const addListOfTodosOriginalFx = createEffect<AddListOfTodosInputs, TodoList>(
@@ -46,6 +47,22 @@ forward({
   from: addListOfTodosFx.doneData,
   to: listOfTodosModel.events.upsertListOfTodos,
 });
+
+addListOfTodosFx.doneData.watch((payload) =>
+  notificationModel.events.addNotification({
+    type: 'message',
+    content: `Added new task: ${payload.label}`,
+    duration: 3000,
+  }),
+);
+
+addListOfTodosFx.fail.watch((payload) =>
+  notificationModel.events.addNotification({
+    type: 'error',
+    content: payload.error.message,
+    duration: 5000,
+  }),
+);
 
 const changeEditState = createEvent();
 

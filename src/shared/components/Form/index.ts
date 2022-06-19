@@ -1,7 +1,2 @@
-import { ErrorFeedback } from './ErrorFeedback';
-import { InputField } from './InputField';
-
-export const Form = {
-  InputField,
-  ErrorFeedback,
-};
+export * from './ErrorFeedback';
+export * from './InputField';

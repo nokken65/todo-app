@@ -25,14 +25,15 @@ const DateCardView = ({
 
   return (
     <Button
+      bordered
       className={clsx(
-        'flex-col w-16 h-16 bg-gray-pale text-gray-light justify-center gap-0 select-none font-normal rounded-lg',
-        isCurrent && !isSelected && 'text-gray bg-green-pale',
-        isSelected && '!text-white !bg-violet',
+        'flex-col w-16 h-16 gap-0 select-none shrink-0',
+        isCurrent && !isSelected && 'bg-green-300 border-green-300',
       )}
+      type={isSelected ? 'primary' : 'ghost'}
       onClick={onClick}
     >
-      <div className='flex gap-0.5'>
+      <div className='flex gap-0.5 font-normal'>
         <Typography uppercase size='sm'>
           {formattedDateWeek},
         </Typography>

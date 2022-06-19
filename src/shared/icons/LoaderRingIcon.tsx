@@ -1,6 +1,6 @@
 import { memo, SVGAttributes } from 'react';
 
-type LoaderRingIconSvgProps = SVGAttributes<SVGElement>;
+type LoaderRingIconSvgProps = SVGAttributes<SVGElement> & {};
 
 const LoaderRingIconSvg = ({ ...props }: LoaderRingIconSvgProps) => {
   return (

@@ -1,2 +1,2 @@
 export * as dateModel from './model';
-export * from './ui';
+export * from './ui/DateCard';
