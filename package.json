@@ -59,5 +59,8 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-tsconfig-paths": "^3.4.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": ">=16"
+  }
 }
