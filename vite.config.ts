@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     viteCompression({
       algorithm: 'brotliCompress',
+      deleteOriginFile: true,
     }),
     // viteCompression({
     //   algorithm: 'gzip',
