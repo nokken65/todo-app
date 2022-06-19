@@ -9,12 +9,11 @@ export default defineConfig({
   plugins: [
     viteCompression({
       algorithm: 'brotliCompress',
-      deleteOriginFile: true,
     }),
-    // viteCompression({
-    //   algorithm: 'gzip',
-    // }),
-    // splitVendorChunkPlugin(),
+    viteCompression({
+      algorithm: 'gzip',
+    }),
+    splitVendorChunkPlugin(),
     chunkSplitPlugin({
       strategy: 'default',
       customSplitting: {
