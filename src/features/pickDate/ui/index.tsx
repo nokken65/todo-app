@@ -1,5 +1,4 @@
 import { reflect } from '@effector/reflect';
-import { compareAsc } from 'date-fns';
 import { useEffect, useRef } from 'react';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
@@ -23,9 +22,6 @@ const DatePickerView = ({
   selectedIsCurrent,
   selectDate,
 }: DatePickerProps) => {
-  const fullSelectedDate = new Date(selectedDate);
-  const fullCurrentDate = new Date(currentDate);
-
   // initial scroll
   const wrapperRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<HTMLDivElement>(null);
@@ -59,26 +55,16 @@ const DatePickerView = ({
         innerRef={wrapperRef}
         vertical={false}
       >
-        {dateRange.map((date) => {
-          const fullDate = new Date(date);
-
-          const isSelected = compareAsc(fullDate, fullSelectedDate) === 0;
-          const isCurrent = compareAsc(fullDate, fullCurrentDate) === 0;
-
-          return (
-            <div
-              key={fullDate.toISOString()}
-              ref={isSelected ? focusRef : null}
-            >
-              <DateCard
-                date={date}
-                isCurrent={isCurrent}
-                isSelected={isSelected}
-                onClick={() => selectDate(date)}
-              />
-            </div>
-          );
-        })}
+        {dateRange.map((date) => (
+          <div key={date} ref={date === selectedDate ? focusRef : null}>
+            <DateCard
+              date={date}
+              isCurrent={date === currentDate}
+              isSelected={date === selectedDate}
+              onClick={() => selectDate(date)}
+            />
+          </div>
+        ))}
       </ScrollContainer>
     </div>
   );

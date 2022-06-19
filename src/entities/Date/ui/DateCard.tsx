@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { format } from 'date-fns';
 import { memo } from 'react';
 
 import { Button, Typography } from '~/shared/components';
+import { format } from '~/shared/utils';
 
 type DateCardProps = {
   date: string;
@@ -19,9 +19,9 @@ const DateCardView = ({
 }: DateCardProps) => {
   const fullDate = new Date(date);
 
-  const formattedDateMonth = format(fullDate, 'MM');
-  const formattedDateWeek = format(fullDate, 'EEE');
-  const formattedDateDay = format(fullDate, 'dd');
+  const formattedDateMonth = format(fullDate, { month: '2-digit' });
+  const formattedDateWeek = format(fullDate, { weekday: 'short' });
+  const formattedDateDay = format(fullDate, { day: '2-digit' });
 
   return (
     <Button

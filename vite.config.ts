@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 import viteCompression from 'vite-plugin-compression';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -13,7 +13,6 @@ export default defineConfig({
     viteCompression({
       algorithm: 'gzip',
     }),
-    splitVendorChunkPlugin(),
     chunkSplitPlugin({
       strategy: 'default',
       customSplitting: {
@@ -21,7 +20,6 @@ export default defineConfig({
         'effector-vendor': ['effector', 'effector-react', '@effector/reflect'],
         'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
         'supabase-vendor': ['@supabase/supabase-js'],
-        'date-fn-vendor': ['date-fns'],
       },
     }),
     react(),
