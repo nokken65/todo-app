@@ -1,26 +1,13 @@
-import { ReactNode } from 'react';
-
 import { Heading } from '~/shared/components';
 
 type ListOfTodosLabelProps = {
   label: string;
-  isEdit?: boolean;
-  form?: ReactNode;
 };
 
-export const ListOfTodosLabel = ({
-  label,
-  isEdit = false,
-  form,
-}: ListOfTodosLabelProps) => {
+export const ListOfTodosLabel = ({ label }: ListOfTodosLabelProps) => {
   return (
-    <>
-      {!isEdit && (
-        <Heading capitalize={false} className='break-words' type='h2'>
-          {label}
-        </Heading>
-      )}
-      {isEdit && form}
-    </>
+    <Heading capitalize={false} className='!break-words' type='h2'>
+      {label}
+    </Heading>
   );
 };

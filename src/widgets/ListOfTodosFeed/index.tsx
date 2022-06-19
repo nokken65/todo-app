@@ -8,12 +8,12 @@ import {
   ListOfTodosLabel,
   listOfTodosModel,
 } from '~/entities/ListOfTodos';
+import { TodoItem } from '~/entities/Todo';
 import { deleteListOfTodosModel } from '~/features/deleteListOfTodos';
 import {
   UpdateLabelListOfTodosForm,
   updateListOfTodosModel,
 } from '~/features/updateListOfTodos';
-import { Typography } from '~/shared/components';
 import { LoaderRingIcon } from '~/shared/icons';
 import type { TodoList } from '~/shared/types';
 
@@ -54,22 +54,24 @@ const ListOfTodosItemView = ({
         }
         isDisabled={listsBeingDeleted.includes(listOfTodos.id)}
         label={
-          <ListOfTodosLabel
-            form={
-              <UpdateLabelListOfTodosForm
-                id={listOfTodos.id}
-                label={listOfTodos.label}
-              />
-            }
-            isEdit={listLabelBeingUpdated === listOfTodos.id}
-            label={listOfTodos.label}
-          />
+          listLabelBeingUpdated === listOfTodos.id ? (
+            <UpdateLabelListOfTodosForm
+              id={listOfTodos.id}
+              label={listOfTodos.label}
+            />
+          ) : (
+            <ListOfTodosLabel label={listOfTodos.label} />
+          )
         }
       >
-        <Typography>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores,
-          dolor.
-        </Typography>
+        <ul className='flex flex-col gap-2'>
+          {listOfTodos.todos &&
+            listOfTodos.todos.map((todo) => (
+              <li key={todo.id}>
+                <TodoItem {...todo} />
+              </li>
+            ))}
+        </ul>
       </ListOfTodosCard>
     </li>
   );
@@ -93,7 +95,7 @@ const ListOfTodosList = list({
 });
 
 const ListOfTodosWrapper = () => (
-  <ul className='flex flex-col h-full gap-4'>
+  <ul className='grid h-full grid-cols-2 gap-4 2xl:flex 2xl:flex-col'>
     <ListOfTodosList />
   </ul>
 );

@@ -3,7 +3,7 @@ import { reflect } from '@effector/reflect';
 import { addListOfTodosModel } from '~/features/addListOfTodos';
 import { AddListOfTodosForm } from '~/features/addListOfTodos/ui';
 import { Button } from '~/shared/components';
-import { AddIcon, ArrowIcon } from '~/shared/icons';
+import { AddIcon } from '~/shared/icons';
 
 type AddListOfTodosProps = {
   isEdit: boolean;
@@ -15,21 +15,9 @@ const AddListOfTodosView = ({
   changeEditState,
 }: AddListOfTodosProps) => {
   return isEdit ? (
-    <AddListOfTodosForm
-      closeButton={
-        <Button
-          className='justify-center w-10 h-full text-white bg-violet'
-          onClick={changeEditState}
-        >
-          <ArrowIcon className='w-4 h-4' direction='left' />
-        </Button>
-      }
-    />
+    <AddListOfTodosForm />
   ) : (
-    <Button
-      className='justify-center w-full h-10 font-bold text-white rounded-lg bg-violet-600'
-      onClick={changeEditState}
-    >
+    <Button bordered className='grow' onClick={changeEditState}>
       <AddIcon className='w-4 h-4' />
     </Button>
   );

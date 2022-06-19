@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { ButtonWithLoader } from '~/shared/components';
+import { Button } from '~/shared/components';
 import { ROUTE_PATHS } from '~/shared/constants';
 import { ArrowIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
@@ -13,7 +13,9 @@ import { SignInWithEmailInputs } from '../model/model';
 import { signInWithEmailSchema } from '../validation';
 
 type SignInWithEmailFormProps = {
-  onSubmit: (props: SignInWithEmailInputs) => Promise<void>;
+  onSubmit: (props: SignInWithEmailInputs) => Promise<{
+    params: SignInWithEmailInputs;
+  }>;
 };
 
 const SignInWithEmailFormView = ({ onSubmit }: SignInWithEmailFormProps) => {
@@ -37,14 +39,12 @@ const SignInWithEmailFormView = ({ onSubmit }: SignInWithEmailFormProps) => {
       <Form.Field
         autoFocus
         after={
-          <ButtonWithLoader
-            className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={methods.formState.isSubmitting}
+          <Button
+            htmlType='submit'
+            icon={<ArrowIcon className='w-4 h-4' direction='right' />}
             isLoading={methods.formState.isSubmitting}
-            type='submit'
-          >
-            <ArrowIcon className='w-4 h-4' direction='right' />
-          </ButtonWithLoader>
+            rounded={false}
+          />
         }
         name='email'
         placeholder='example@mail.com'

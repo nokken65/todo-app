@@ -22,8 +22,8 @@ export const addListOfTodos = async ({
   const convertedDate = convertDateStringToPostgresStyle(date);
 
   const { data, error } = await supabase
-    .from<TodoList>('todo_lists')
-    .insert({ date: convertedDate, label, user_id: user.id, todo_ids: [] })
+    .from<TodoList>('lists')
+    .insert({ date: convertedDate, label, userId: user.id })
     .single();
 
   return { data, error: error ? new Error(error.message) : null };

@@ -1,24 +1,23 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { AddListOfTodosInputs } from '~/entities/ListOfTodos';
-import { ButtonWithLoader } from '~/shared/components';
+import { Button } from '~/shared/components';
 import { AddIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 
-import { effects } from '../model';
+import { effects, events } from '../model';
 import { addListOfTodosSchema } from '../validation';
 
 type AddListOfTodosFormProps = {
-  closeButton?: ReactNode;
   onSubmit: (props: Pick<AddListOfTodosInputs, 'label'>) => void;
+  onBlur: () => void;
 };
 
 const AddListOfTodosFormView = ({
-  closeButton,
   onSubmit,
+  onBlur,
 }: AddListOfTodosFormProps) => {
   const methods = useForm<Pick<AddListOfTodosInputs, 'label'>>({
     mode: 'onChange',
@@ -27,20 +26,22 @@ const AddListOfTodosFormView = ({
   });
 
   return (
-    <Form {...methods} resetOnSubmitSuccessful onSubmit={onSubmit}>
+    <Form
+      {...methods}
+      resetOnSubmitSuccessful
+      onBlur={onBlur}
+      onSubmit={onSubmit}
+    >
       <Form.Field
         autoFocus
         after={
-          <ButtonWithLoader
-            className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={methods.formState.isSubmitting}
+          <Button
+            htmlType='submit'
+            icon={<AddIcon className='w-4 h-4' />}
             isLoading={methods.formState.isSubmitting}
-            type='submit'
-          >
-            <AddIcon className='w-4 h-4' />
-          </ButtonWithLoader>
+            rounded={false}
+          />
         }
-        before={closeButton}
         name='label'
         placeholder='At work'
         type='text'
@@ -53,5 +54,6 @@ export const AddListOfTodosForm = reflect({
   view: AddListOfTodosFormView,
   bind: {
     onSubmit: effects.addListOfTodosFx,
+    onBlur: events.changeEditState,
   },
 });

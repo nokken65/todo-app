@@ -10,7 +10,7 @@ export const deleteListOfTodos = async ({
   error: Error | null;
 }> => {
   const { error } = await supabase
-    .from<TodoList>('todo_lists')
+    .from<TodoList>('lists')
     .delete()
     .match({ id });
 

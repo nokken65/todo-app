@@ -13,7 +13,7 @@ const SignInActionButtonRoute = () => {
 
   return (
     <Button
-      className='justify-center w-full h-10 font-bold text-white rounded-lg bg-violet-600 border-violet-600'
+      className='w-full h-11'
       onClick={() => navigate(ROUTE_PATHS.signin)}
     >
       Login

@@ -12,7 +12,9 @@ export const signInWithEmail = async ({
     const { error } = await supabase.auth.signIn({ email });
 
     return { error: error ? new Error(error.message) : null };
-  } catch (error) {
-    throw new Error('Auth error');
+  } catch (err) {
+    const error = err as Error;
+
+    return { error };
   }
 };

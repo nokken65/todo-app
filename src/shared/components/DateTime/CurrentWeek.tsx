@@ -5,7 +5,7 @@ const CutrrentWeekView = () => {
   const date = format(new Date(), 'EEEE');
 
   return (
-    <time className='text-violet' dateTime={date}>
+    <time className='text-violet-500' dateTime={date}>
       {date}
     </time>
   );

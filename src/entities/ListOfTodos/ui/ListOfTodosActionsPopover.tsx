@@ -27,11 +27,10 @@ const ListOfTodosActionsPopoverView = ({
         <div className='flex flex-col'>
           {actions.map((action) => (
             <Button
-              className={clsx(
-                '!p-5 !pt-3 !pb-3 font-bold hover:bg-violet-600 hover:text-white hover:brightness-100',
-                action.className,
-              )}
+              className={clsx('p-3', action.className)}
               key={action.name}
+              rounded={false}
+              type='ghost'
               onClick={action.onAction}
             >
               {action.content}
@@ -40,11 +39,11 @@ const ListOfTodosActionsPopoverView = ({
         </div>
       }
       offset={[5, 0]}
-      placement={PopoverPlacement.left}
+      placement={PopoverPlacement.leftTop}
       trigger={PopoverTriggerType.hover}
       withArrow={false}
     >
-      <Button>
+      <Button className='h-10' type='ghost'>
         <MoreIcon className='w-4 h-4 text-gray-500' />
       </Button>
     </Popover>

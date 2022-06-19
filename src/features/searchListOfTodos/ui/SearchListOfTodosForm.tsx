@@ -1,24 +1,23 @@
 import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ButtonWithLoader } from '~/shared/components';
+import { Button } from '~/shared/components';
 import { SearchIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 import { TodoList } from '~/shared/types';
 
-import { effects } from '../model';
+import { effects, events } from '../model';
 import { searchListOfTodosSchema } from '../validation';
 
 type SearchListOfTodosFormProps = {
-  closeButton?: ReactNode;
   onSubmit: (props: Pick<TodoList, 'label'>) => void;
+  onBlur: () => void;
 };
 
 const SearchListOfTodosFormView = ({
-  closeButton,
   onSubmit,
+  onBlur,
 }: SearchListOfTodosFormProps) => {
   const methods = useForm<Pick<TodoList, 'label'>>({
     mode: 'onChange',
@@ -31,20 +30,19 @@ const SearchListOfTodosFormView = ({
   } = methods;
 
   return (
-    <Form {...methods} resetOnSubmitSuccessful onSubmit={onSubmit}>
+    <Form {...methods} onBlur={onBlur} onSubmit={onSubmit}>
       <Form.Field
+        autoFocus
         after={
-          <ButtonWithLoader
-            className='justify-center min-w-[36px] font-bold text-white bg-violet-600'
-            disabled={isSubmitting}
+          <Button
+            htmlType='submit'
+            icon={<SearchIcon className='w-5 h-5' />}
             isLoading={isSubmitting}
-            type='submit'
-          >
-            <SearchIcon className='w-5 h-5' />
-          </ButtonWithLoader>
+            rounded={false}
+          />
         }
-        before={closeButton}
         name='label'
+        placeholder='At work'
         type='search'
       />
     </Form>
@@ -55,5 +53,6 @@ export const SearchListOfTodosForm = reflect({
   view: SearchListOfTodosFormView,
   bind: {
     onSubmit: effects.searchListOfTodosFx,
+    onBlur: events.changeSearchState,
   },
 });

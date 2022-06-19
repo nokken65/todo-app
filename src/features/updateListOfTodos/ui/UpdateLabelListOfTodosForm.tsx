@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { UpdateListOfTodosInputs } from '~/entities/ListOfTodos';
-import { ButtonWithLoader } from '~/shared/components';
+import { Button } from '~/shared/components';
 import { EditIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 import { TodoList } from '~/shared/types';
@@ -25,13 +25,14 @@ const UpdateLabelListOfTodosFormView = ({
   const methods = useForm<Pick<UpdateListOfTodosInputs, 'label'>>({
     mode: 'onChange',
     resolver: yupResolver(updateLabelListOfTodosSchema),
-    defaultValues: { label: '' },
+    defaultValues: { label },
   });
 
   return (
     <Form
       {...methods}
       resetOnSubmitSuccessful
+      onBlur={onClose}
       onSubmit={(data) =>
         // eslint-disable-next-line no-nested-ternary
         data.label === label
@@ -44,16 +45,14 @@ const UpdateLabelListOfTodosFormView = ({
       <Form.Field
         autoFocus
         before={
-          <ButtonWithLoader
-            className='justify-center w-10 font-bold text-white bg-violet-600'
-            disabled={methods.formState.isSubmitting}
+          <Button
+            htmlType='submit'
+            icon={<EditIcon className='w-5 h-5' />}
             isLoading={methods.formState.isSubmitting}
-            type='submit'
-          >
-            <EditIcon className='w-5 h-5' />
-          </ButtonWithLoader>
+            rounded={false}
+          />
         }
-        className='!h-10 max-w-md'
+        className='!h-10 max-w-md '
         name='label'
         placeholder='At work'
         type='text'

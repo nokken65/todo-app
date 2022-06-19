@@ -1,11 +1,14 @@
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import { memo } from 'react';
 
-const CutrrentDateView = () => {
+type CurrentDateProps = { className?: string };
+
+const CutrrentDateView = ({ className }: CurrentDateProps) => {
   const date = format(new Date(), 'dd MMM yyyy');
 
   return (
-    <time className='text-sm text-gray-light' dateTime={date}>
+    <time className={clsx('text-sm text-gray-400', className)} dateTime={date}>
       {date}
     </time>
   );

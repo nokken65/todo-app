@@ -1,19 +1,10 @@
 import clsx from 'clsx';
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
-type CardProps = PropsWithChildren<{ className?: string | null | boolean }>;
+type CardProps = PropsWithChildren<HTMLAttributes<HTMLElement> & {}>;
 
 const Card = ({ className, children }: CardProps) => {
-  return (
-    <article
-      className={clsx(
-        'flex flex-col w-full gap-2 p-6 h-fit rounded-xl bg-gray-pale',
-        className,
-      )}
-    >
-      {children}
-    </article>
-  );
+  return <article className={clsx('card', className)}>{children}</article>;
 };
 
 export { Card };

@@ -24,7 +24,7 @@ export const NotificationToast = ({
         type === 'error' && 'border-red-400',
       )}
     >
-      <div className='relative w-full h-full backdrop-blur-md bg-violet-50 bg-opacity-80'>
+      <div className='relative w-full h-full bg-violet-50 bg-opacity-80'>
         {!!duration && (
           <div
             className={clsx(
@@ -37,7 +37,7 @@ export const NotificationToast = ({
           />
         )}
         <div className='flex flex-col p-2'>
-          <div className='flex gap-4 items-center justify-between'>
+          <div className='flex items-center justify-between gap-4'>
             <Heading
               className={clsx(
                 type === 'message' && 'text-violet-600',
@@ -48,7 +48,7 @@ export const NotificationToast = ({
             >
               {type}
             </Heading>
-            <Button className='z-10' onClick={onClose}>
+            <Button className='z-10' type='ghost' onClick={onClose}>
               <AddIcon className='w-4 h-4 rotate-45' />
             </Button>
           </div>

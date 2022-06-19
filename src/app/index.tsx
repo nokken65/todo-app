@@ -1,49 +1,20 @@
 import './styles/index.scss';
 
 import { reflect } from '@effector/reflect';
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
-import {
-  Notification,
-  notificationModel,
-  NotificationToast,
-} from '~/entities/Notification';
 import { userModel } from '~/entities/User';
 import { Routing } from '~/pages';
-import { Portal } from '~/shared/lib';
 
 import { withProviders } from './providers';
 
-type PureAppProps = {
-  notifications: Notification[];
-  onClose: (props: Pick<Notification, 'id'>) => void;
-};
-
-const PureAppView = ({ notifications, onClose }: PureAppProps) => {
-  return (
-    <>
-      <Routing />
-      <Portal containerId='notify-root'>
-        <div className='flex flex-col gap-2 pb-6'>
-          {notifications.map((item) => (
-            <NotificationToast
-              key={item.id}
-              onClose={() => onClose({ id: item.id })}
-              {...item}
-            />
-          ))}
-        </div>
-      </Portal>
-    </>
-  );
+const PureAppView = () => {
+  return <Routing />;
 };
 
 const PureApp = reflect({
   view: PureAppView,
-  bind: {
-    notifications: notificationModel.selectors.$notifications,
-    onClose: notificationModel.events.removeNotification,
-  },
+  bind: {},
   hooks: {
     mounted: () => {
       userModel.effects.getUserFx();

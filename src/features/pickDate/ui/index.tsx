@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import { DateCard, dateModel } from '~/entities/Date';
+import { useForceUpdate } from '~/shared/hooks';
 import { scrollIntoView } from '~/shared/utils';
 
 import { events, selectors } from '../model';
@@ -23,9 +24,17 @@ const DatePickerView = ({
   selectedIsCurrent,
   selectDate,
 }: DatePickerProps) => {
-  const focusRef = useRef<HTMLDivElement>(null);
   const fullSelectedDate = new Date(selectedDate);
   const fullCurrentDate = new Date(currentDate);
+
+  // initial scroll
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const focusRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (wrapperRef.current) {
+      scrollIntoView(focusRef);
+    }
+  }, [wrapperRef.current?.childElementCount]);
 
   useEffect(() => {
     scrollIntoView(focusRef);
@@ -34,15 +43,17 @@ const DatePickerView = ({
   return (
     <div className='flex w-full gap-2'>
       {!selectedIsCurrent && (
-        <div className='pr-2 border-r border-gray-pale'>
+        <>
           <DateCard
             isCurrent
             date={currentDate}
             onClick={() => selectDate(currentDate)}
           />
-        </div>
+          <span className='flex w-1 bg-gray-200' />
+        </>
       )}
       <ScrollContainer
+        innerRef={wrapperRef}
         hideScrollbars
         horizontal
         nativeMobileScroll

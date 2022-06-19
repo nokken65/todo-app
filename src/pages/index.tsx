@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { userModel } from '~/entities/User';
 import { ROUTE_PATHS } from '~/shared/constants';
 import { LoaderRingIcon } from '~/shared/icons';
+import { Notifications } from '~/widgets/Notifications';
 
 import { SignInActionButtonRoute } from './Welcome/SignInRoute';
 
@@ -16,12 +17,11 @@ const TodoListsRoute = lazy(() => import('./Feed/TodoListsRoute'));
 
 const Routing = () => {
   const user = useStore(userModel.selectors.$user);
-  // const user = true;
 
   return (
     <Suspense
       fallback={
-        <div className='w-full h-full min-h-screen flex justify-center items-center'>
+        <div className='flex items-center justify-center w-full h-full min-h-screen'>
           <LoaderRingIcon className='animate-spin-fast' />
         </div>
       }
@@ -43,6 +43,8 @@ const Routing = () => {
         )}
         <Route element={<Navigate to={ROUTE_PATHS.index} />} path='*' />
       </Routes>
+      {/* Notifications */}
+      <Notifications />
     </Suspense>
   );
 };

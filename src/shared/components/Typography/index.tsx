@@ -23,9 +23,8 @@ const TypographyView = ({
     <p
       {...props}
       className={clsx(
-        // 'text-gray dark:text-white',
-        `text-${size}`,
-        bold && 'font-bold',
+        `font-normal text-${size}`,
+        bold && '!font-bold',
         uppercase && 'uppercase',
         italic && 'italic',
         className,

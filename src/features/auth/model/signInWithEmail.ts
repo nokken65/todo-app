@@ -1,6 +1,7 @@
-import { createEffect, sample } from 'effector';
+import { createEffect } from 'effector';
 
 import { notificationModel } from '~/entities/Notification';
+import { userModel } from '~/entities/User';
 
 import { signInWithEmail } from '../api';
 import { SignInWithEmailInputs } from './model';
@@ -18,13 +19,8 @@ const signInWithEmailFx = createEffect<
   return { params: props };
 });
 
-sample({
-  clock: signInWithEmailFx.done,
-});
-
 signInWithEmailFx.doneData.watch((payload) => {
   notificationModel.events.addNotification({
-    id: `${Math.random()}`,
     duration: 0,
     content: `Check your email "${payload.params.email}" to log in`,
     type: 'message',
@@ -33,14 +29,15 @@ signInWithEmailFx.doneData.watch((payload) => {
 
 signInWithEmailFx.fail.watch((payload) => {
   notificationModel.events.addNotification({
-    id: `${Math.random()}`,
-    duration: 60000,
+    duration: 3000,
     content: payload.error.message,
     type: 'error',
   });
 });
 
-signInWithEmailFx.fail.watch(console.error);
+userModel.events.setUser.watch(() =>
+  notificationModel.events.removeAllNotifications(),
+);
 
 export const effects = {
   signInWithEmailFx,
