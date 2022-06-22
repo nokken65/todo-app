@@ -1,23 +1,16 @@
-import { createEvent, createStore, forward } from 'effector';
+import { createEvent, createStore, forward, sample } from 'effector';
 
 import { dateModel } from '~/entities/Date';
-import { listOfTodosModel } from '~/entities/ListOfTodos';
-import { addDays, format } from '~/shared/utils';
+import { todoListModel } from '~/entities/TodoList';
+import { DateString } from '~/shared/types';
+import { format, formattedDistance } from '~/shared/utils';
 
-const updateDateRange = createEvent<string>();
+const updateDateRange = createEvent<DateString>();
 
-const $dateRange = createStore<string[]>([]).on(
-  updateDateRange,
-  (_event, currentDate) => {
-    const prevDates = [...Array(14)]
-      .map((_, i) => format(addDays(new Date(currentDate), -i - 1)))
-      .reverse();
-    const nextDates = [...Array(14)].map((_, i) =>
-      format(addDays(new Date(currentDate), i + 1)),
-    );
-
-    return [...prevDates, currentDate, ...nextDates];
-  },
+const $dateRange = createStore<DateString[]>(
+  formattedDistance({ date: format(new Date()), amount: 14 }),
+).on(updateDateRange, (_, payload) =>
+  formattedDistance({ date: payload, amount: 14 }),
 );
 
 forward({
@@ -25,12 +18,16 @@ forward({
   to: updateDateRange,
 });
 
-forward({
-  // TODO: fix thix
-  // @ts-ignore
-  from: updateDateRange,
-  to: listOfTodosModel.effects.getListsOfTodosFx,
+sample({
+  clock: updateDateRange,
+  target: todoListModel.effects.getTodoListsFx,
+  fn: () => ({}),
 });
+
+// forward({
+//   from: updateDateRange,
+//   to: todoListModel.effects.getTodoListsFx,
+// });
 
 export const selectors = {
   $dateRange,

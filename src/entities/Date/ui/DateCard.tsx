@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { Button, Typography } from '~/shared/components';
+import type { DateString } from '~/shared/types';
 import { format } from '~/shared/utils';
 
 type DateCardProps = {
-  date: string;
+  date: DateString;
   isSelected?: boolean;
   isCurrent?: boolean;
   onClick: () => void;
@@ -17,18 +18,16 @@ const DateCardView = ({
   isCurrent = false,
   onClick,
 }: DateCardProps) => {
-  const fullDate = new Date(date);
-
-  const formattedDateMonth = format(fullDate, { month: '2-digit' });
-  const formattedDateWeek = format(fullDate, { weekday: 'short' });
-  const formattedDateDay = format(fullDate, { day: '2-digit' });
+  const formattedDateMonth = useMemo(() => format(date, 'MM'), [date]);
+  const formattedDateWeek = useMemo(() => format(date, 'EEE'), [date]);
+  const formattedDateDay = useMemo(() => format(date, 'dd'), [date]);
 
   return (
     <Button
       bordered
       className={clsx(
         'flex-col w-16 h-16 gap-0 select-none shrink-0',
-        isCurrent && !isSelected && 'bg-green-300 border-green-300',
+        isCurrent && !isSelected && 'bg-blue-300 border-blue-300',
       )}
       type={isSelected ? 'primary' : 'ghost'}
       onClick={onClick}

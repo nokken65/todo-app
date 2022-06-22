@@ -5,8 +5,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { userModel } from '~/entities/User';
 import { ROUTE_PATHS } from '~/shared/constants';
 import { LoaderRingIcon } from '~/shared/icons';
-import { Notifications } from '~/widgets/Notifications';
 
+// import { Notifications } from '~/widgets/Notifications';
 import { SignInActionButtonRoute } from './Welcome/SignInRoute';
 
 const WelcomeRoute = lazy(() => import('./Welcome'));
@@ -27,7 +27,6 @@ const Routing = () => {
       }
     >
       <Routes>
-        {/* TODO: remove blink signin page after auth */}
         {user ? (
           <Route path={ROUTE_PATHS.index}>
             <Route index element={<Navigate to={ROUTE_PATHS.feed} />} />
@@ -44,7 +43,7 @@ const Routing = () => {
         <Route element={<Navigate to={ROUTE_PATHS.index} />} path='*' />
       </Routes>
       {/* Notifications */}
-      <Notifications />
+      {/* <Notifications /> */}
     </Suspense>
   );
 };

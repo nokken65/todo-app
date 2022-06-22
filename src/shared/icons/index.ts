@@ -1,6 +1,7 @@
 export * from './AddIcon';
 export * from './ArrowIcon';
 export * from './CheckIcon';
+export * from './CloseIcon';
 export * from './EditIcon';
 export * from './GithubIcon';
 export * from './GitlabIcon';

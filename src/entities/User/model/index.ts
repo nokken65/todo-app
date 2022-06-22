@@ -11,6 +11,4 @@ export const events = {
   ...userAuthStateListener.events,
 };
 
-export const effects = {
-  ...user.effects,
-};
+export const effects = {};

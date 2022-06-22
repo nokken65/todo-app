@@ -1,19 +1,17 @@
-type FnFormatType = (
-  date: Date,
-  options?: Intl.DateTimeFormatOptions & { delimiter?: string },
-) => string;
+import formatDate from 'date-fns/format';
 
-export const format: FnFormatType = (
-  date,
-  options = {
-    year: 'numeric',
-    day: '2-digit',
-    month: '2-digit',
-  },
-): string => {
-  const arr = date.toLocaleDateString('en-US', options).split('/');
+import { DateString } from '../../types';
 
-  const result = [arr.splice(-1), ...arr].join(options?.delimiter ?? '-');
+type FormatFn = (date: Date | DateString, pattern?: string) => DateString;
 
-  return result;
+export const format: FormatFn = (date, pattern = 'yyyy-MM-dd') => {
+  let dateObj: Date;
+  if (typeof date === 'string' || date instanceof String) {
+    dateObj = new Date(date);
+  } else {
+    dateObj = date;
+  }
+  const formatted: DateString = formatDate(dateObj, pattern);
+
+  return formatted;
 };

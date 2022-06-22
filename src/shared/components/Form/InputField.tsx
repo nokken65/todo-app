@@ -31,7 +31,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         <div
           className={clsx(
             'flex w-full overflow-hidden text-lg bg-white border-2 border-gray-300 rounded-lg focus-within:outline focus-within:outline-4 focus-within:outline-blue-200',
-            isValid && '!border-violet-600',
+            isValid && '!border-violet-500',
             errorMessage && '!border-red-300',
             className,
           )}

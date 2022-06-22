@@ -45,6 +45,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vitejs/plugin-react", "npm:1.3.2"],\
             ["autoprefixer", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:10.4.7"],\
             ["clsx", "npm:1.1.1"],\
+            ["date-fns", "npm:2.28.0"],\
             ["dotenv", "npm:16.0.1"],\
             ["effector", "npm:22.3.0"],\
             ["effector-react", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:22.0.6"],\
@@ -59,7 +60,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:4.5.0"],\
             ["eslint-plugin-simple-import-sort", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:7.0.0"],\
             ["http-server", "npm:14.1.1"],\
+            ["immer", "npm:9.0.15"],\
             ["openapi-typescript", "npm:5.4.0"],\
+            ["patronum", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:1.8.3"],\
             ["postcss", "npm:8.4.14"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\
@@ -1915,6 +1918,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/damerau-levenshtein-npm-1.0.8-bda7311c69-d240b77575.zip/node_modules/damerau-levenshtein/",\
           "packageDependencies": [\
             ["damerau-levenshtein", "npm:1.0.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["date-fns", [\
+        ["npm:2.28.0", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-2.28.0-c19c5add1b-a0516b2e4f.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:2.28.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3807,6 +3819,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["immer", [\
+        ["npm:9.0.15", {\
+          "packageLocation": "./.yarn/cache/immer-npm-9.0.15-6c734225db-92e3d63e81.zip/node_modules/immer/",\
+          "packageDependencies": [\
+            ["immer", "npm:9.0.15"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["immutable", [\
         ["npm:4.1.0", {\
           "packageLocation": "./.yarn/cache/immutable-npm-4.1.0-f6635927b8-b9bc1f14fb.zip/node_modules/immutable/",\
@@ -4950,6 +4971,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/path-type-npm-4.0.0-10d47fc86a-5b1e2daa24.zip/node_modules/path-type/",\
           "packageDependencies": [\
             ["path-type", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["patronum", [\
+        ["npm:1.8.3", {\
+          "packageLocation": "./.yarn/cache/patronum-npm-1.8.3-c0eb6403d2-872fe29e22.zip/node_modules/patronum/",\
+          "packageDependencies": [\
+            ["patronum", "npm:1.8.3"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:1.8.3", {\
+          "packageLocation": "./.yarn/__virtual__/patronum-virtual-767abc748d/0/cache/patronum-npm-1.8.3-c0eb6403d2-872fe29e22.zip/node_modules/patronum/",\
+          "packageDependencies": [\
+            ["patronum", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:1.8.3"],\
+            ["@types/effector", null],\
+            ["effector", "npm:22.3.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/effector",\
+            "effector"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -6156,6 +6199,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vitejs/plugin-react", "npm:1.3.2"],\
             ["autoprefixer", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:10.4.7"],\
             ["clsx", "npm:1.1.1"],\
+            ["date-fns", "npm:2.28.0"],\
             ["dotenv", "npm:16.0.1"],\
             ["effector", "npm:22.3.0"],\
             ["effector-react", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:22.0.6"],\
@@ -6170,7 +6214,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:4.5.0"],\
             ["eslint-plugin-simple-import-sort", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:7.0.0"],\
             ["http-server", "npm:14.1.1"],\
+            ["immer", "npm:9.0.15"],\
             ["openapi-typescript", "npm:5.4.0"],\
+            ["patronum", "virtual:b710176fa9295a53c1d4bceea81b71d026a6827da20822637f11910e792bafdbf396ea9c74b79af90c8020bebd558b0c83a1a3a87234a92f29b87cdc05e47c21#npm:1.8.3"],\
             ["postcss", "npm:8.4.14"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\

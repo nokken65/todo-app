@@ -1,25 +1,20 @@
-import { combine, createEvent, createStore } from 'effector';
+import { createEvent, createStore } from 'effector';
 
+import type { DateString } from '~/shared/types';
 import { format } from '~/shared/utils';
 
-const selectDate = createEvent<string>();
+const selectDate = createEvent<DateString>();
 
-const $selectedDate = createStore<string>(format(new Date())).on(
+const $selectedDate = createStore<DateString>(format(new Date())).on(
   selectDate,
   (_, payload) => payload,
 );
 
-const $currentDate = createStore<string>(format(new Date()));
-
-const $selectedDateIsCurrent = combine(
-  [$selectedDate, $currentDate],
-  ([selected, current]) => selected === current,
-);
+const $currentDate = createStore<DateString>(format(new Date()));
 
 export const selectors = {
   $selectedDate,
   $currentDate,
-  $selectedDateIsCurrent,
 };
 
 export const events = {

@@ -1,7 +1,7 @@
-import { ListOfTodosFeed } from '~/widgets/ListOfTodosFeed';
+import { TodoListsFeed } from '~/widgets/TodoListsFeed';
 
 const TodoListsRoute = () => {
-  return <ListOfTodosFeed />;
+  return <TodoListsFeed />;
 };
 
 export default TodoListsRoute;

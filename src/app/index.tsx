@@ -17,12 +17,11 @@ const PureApp = reflect({
   bind: {},
   hooks: {
     mounted: () => {
-      userModel.effects.getUserFx();
       userModel.events.subscribeUserAuthStateListener();
     },
-    unmounted: userModel.events.unsubscribeUserAuthStateListener.prepend(
-      () => null,
-    ),
+    unmounted: () => {
+      userModel.events.unsubscribeUserAuthStateListener();
+    },
   },
 });
 
