@@ -1,4 +1,5 @@
-import { attach, createEffect, forward } from 'effector';
+import { createEffect, createEvent, sample } from 'effector';
+import { v4 as uuidv4 } from 'uuid';
 
 import { dateModel } from '~/entities/Date';
 import {
@@ -6,14 +7,13 @@ import {
   todoListApi,
   todoListModel,
 } from '~/entities/TodoList';
+import { userModel } from '~/entities/User';
 import type { TodoList } from '~/shared/types';
+import { dateToTimestamptz } from '~/shared/utils';
 
-const addTodoListOriginalFx = createEffect<AddTodoListInputs, TodoList>(
-  async ({ date, label }) => {
-    const { data, error } = await todoListApi.addTodoList({
-      date,
-      label,
-    });
+const addTodoListFx = createEffect<AddTodoListInputs, TodoList>(
+  async (todoList) => {
+    const { data, error } = await todoListApi.addTodoList(todoList);
 
     if (error) {
       throw error;
@@ -27,20 +27,30 @@ const addTodoListOriginalFx = createEffect<AddTodoListInputs, TodoList>(
   },
 );
 
-const addTodoListFx = attach({
-  effect: addTodoListOriginalFx,
-  source: dateModel.selectors.$selectedDate,
-  mapParams: ({ label }: Pick<TodoList, 'label'>, selectedDate) => ({
-    date: selectedDate,
-    label,
-  }),
+const addTodoList = createEvent<Pick<AddTodoListInputs, 'label'>>();
+
+sample({
+  clock: addTodoList,
+  source: {
+    date: dateModel.selectors.$selectedDate,
+    userId: userModel.selectors.$userId,
+  },
+  target: [todoListModel.events.upsertTodoList, addTodoListFx],
+  fn: ({ date, userId }, { label }) => {
+    const createdAt = dateToTimestamptz(new Date());
+    const todoList: AddTodoListInputs = {
+      date,
+      label,
+      id: uuidv4(),
+      userId: userId ?? '',
+      createdAt,
+      updatedAt: createdAt,
+    };
+
+    return todoList;
+  },
 });
 
-forward({
-  from: addTodoListFx.doneData,
-  to: todoListModel.events.upsertTodoList,
-});
-
-export const effects = {
-  addTodoListFx,
+export const events = {
+  addTodoList,
 };

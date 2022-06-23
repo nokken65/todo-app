@@ -7,12 +7,16 @@ import type { UpdateTodoListInputs } from '../model/model';
 type UpdateTodoListProps = UpdateTodoListInputs;
 export const updateTodoList = async ({
   id,
-  label,
+  ...obj
 }: UpdateTodoListProps): Promise<Response<TodoList>> => {
   try {
+    const updates = Object.keys(obj)
+      .filter((k) => Boolean(obj[k]))
+      .reduce((a, k) => ({ ...a, [k]: obj[k] }), {});
+
     const { data, error } = await supabase
       .from<TodoList>('lists')
-      .update({ label })
+      .update(updates)
       .eq('id', id)
       .single();
     if (error) {

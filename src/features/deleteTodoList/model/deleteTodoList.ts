@@ -1,5 +1,4 @@
-import { createEffect, createEvent, createStore, forward } from 'effector';
-import produce from 'immer';
+import { createEffect, createEvent, forward } from 'effector';
 
 import {
   DeleteTodoListInputs,
@@ -24,25 +23,7 @@ const deleteTodoList = createEvent<DeleteTodoListInputs>();
 
 forward({
   from: deleteTodoList,
-  to: deleteTodoListFx,
+  to: [todoListModel.events.deleteTodoList, deleteTodoListFx],
 });
 
-forward({
-  from: deleteTodoListFx.doneData,
-  to: todoListModel.events.deleteTodoList,
-});
-
-const $disabledListsId = createStore<Record<string, boolean>>({})
-  .on(deleteTodoList, (state, { id }) =>
-    produce(state, (draft) => {
-      draft[id] = true;
-    }),
-  )
-  .on(deleteTodoListFx.doneData, (state, { id }) =>
-    produce(state, (draft) => {
-      delete draft[id];
-    }),
-  );
-
-export const selectors = { $disabledListsId };
 export const events = { deleteTodoList };

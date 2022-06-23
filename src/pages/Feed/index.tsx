@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { DateCurrent, DateGrindsHeading } from '~/entities/Date/ui';
+import { SearchBreadcrumbs } from '~/features/filterTodoList';
 import { DatePicker } from '~/features/pickDate';
-import { SearchBreadcrumbs } from '~/features/searchTodoList';
 import { Heading, Progress } from '~/shared/components';
 import { AddTodoList } from '~/widgets/AddTodoList';
 import { Header } from '~/widgets/Header';

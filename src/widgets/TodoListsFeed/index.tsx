@@ -10,34 +10,41 @@ import {
   todoListModel,
   TodoListsEmpty,
 } from '~/entities/TodoList';
+import { AddTodoForm, addTodoModel } from '~/features/addTodo';
 import { deleteTodoListModel } from '~/features/deleteTodoList';
+import { filterTodoListModel } from '~/features/filterTodoList';
 import {
   UpdateTodoListLabelForm,
   updateTodoListModel,
 } from '~/features/updateTodoList';
-import { LoaderRingIcon } from '~/shared/icons';
+import { Button } from '~/shared/components';
+import { AddIcon, LoaderRingIcon } from '~/shared/icons';
 import type { TodoList } from '~/shared/types';
 
 type TodoListItemProps = {
   todoList: TodoList;
-  openLabelForm: (id: string) => void;
-  closeLabelForm: (id: string) => void;
+  openTodoListLabelForm: (id: string) => void;
+  closeTodoListLabelForm: (id: string) => void;
+  openAddTodoForm: (id: string) => void;
+  closeAddTodoForm: (id: string) => void;
   deleteTodoList: (props: Pick<TodoList, 'id'>) => void;
 };
 
 const TodoListItemView = ({
   todoList,
-  openLabelForm,
-  closeLabelForm,
+  openTodoListLabelForm,
+  closeTodoListLabelForm,
+  openAddTodoForm,
+  closeAddTodoForm,
   deleteTodoList,
 }: TodoListItemProps) => {
-  const labelFormIsOpen = useStoreMap({
+  const todoListLabelFormIsOpen = useStoreMap({
     store: updateTodoListModel.labelFormState.$isOpen,
     keys: [todoList.id],
     fn: (state, [id]) => state[id],
   });
-  const isDisabled = useStoreMap({
-    store: deleteTodoListModel.selectors.$disabledListsId,
+  const addTodoFormIsOpen = useStoreMap({
+    store: addTodoModel.formState.$isOpen,
     keys: [todoList.id],
     fn: (state, [id]) => state[id],
   });
@@ -51,7 +58,7 @@ const TodoListItemView = ({
               {
                 name: 'editLabelList',
                 content: 'Edit',
-                onAction: () => openLabelForm(todoList.id),
+                onAction: () => openTodoListLabelForm(todoList.id),
               },
               {
                 name: 'deleteList',
@@ -62,20 +69,19 @@ const TodoListItemView = ({
             ]}
           />
         }
-        isDisabled={isDisabled}
         label={
-          labelFormIsOpen ? (
+          todoListLabelFormIsOpen ? (
             <UpdateTodoListLabelForm
               id={todoList.id}
               label={todoList.label}
-              onBlur={() => closeLabelForm(todoList.id)}
+              onBlur={() => closeTodoListLabelForm(todoList.id)}
             />
           ) : (
             <TodoListLabel label={todoList.label} />
           )
         }
       >
-        <ul className='flex flex-col gap-2'>
+        <ul className='flex flex-col gap-2 mb-4'>
           {todoList.todos &&
             todoList.todos.map((todo) => (
               <li key={todo.id}>
@@ -83,6 +89,21 @@ const TodoListItemView = ({
               </li>
             ))}
         </ul>
+        <div className='flex w-full -mb-11'>
+          {addTodoFormIsOpen ? (
+            <AddTodoForm
+              listId={todoList.id}
+              onBlur={() => closeAddTodoForm(todoList.id)}
+            />
+          ) : (
+            <Button
+              className='w-10 h-10 ml-auto'
+              onClick={() => openAddTodoForm(todoList.id)}
+            >
+              <AddIcon className='w-4 h-4' />
+            </Button>
+          )}
+        </div>
       </TodoListCard>
     </li>
   );
@@ -90,11 +111,13 @@ const TodoListItemView = ({
 
 const TodoListList = list({
   view: TodoListItemView,
-  source: todoListModel.selectors.$todoLists,
+  source: filterTodoListModel.selectors.$filteredTodoLists,
   bind: {
     deleteTodoList: deleteTodoListModel.events.deleteTodoList,
-    openLabelForm: updateTodoListModel.labelFormState.open,
-    closeLabelForm: updateTodoListModel.labelFormState.close,
+    openTodoListLabelForm: updateTodoListModel.labelFormState.open,
+    closeTodoListLabelForm: updateTodoListModel.labelFormState.close,
+    openAddTodoForm: addTodoModel.formState.open,
+    closeAddTodoForm: addTodoModel.formState.close,
   },
   mapItem: {
     todoList: (_list) => _list,
@@ -103,7 +126,7 @@ const TodoListList = list({
 });
 
 const TodoListsWrapper = () => (
-  <ul className='grid h-full grid-cols-2 gap-4 2xl:flex 2xl:flex-col'>
+  <ul className='grid h-full grid-cols-2 gap-10 2xl:flex 2xl:flex-col'>
     <TodoListList />
   </ul>
 );
@@ -132,7 +155,7 @@ const TodoListsFeedContent = variant({
   },
   hooks: {
     mounted: () => {
-      todoListModel.effects.getTodoListsFx({});
+      todoListModel.effects.getTodoListsFx();
     },
   },
 });

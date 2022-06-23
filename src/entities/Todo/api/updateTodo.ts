@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { supabase } from '~/shared/api';
-import { Todo } from '~/shared/types';
+import { Response, Todo } from '~/shared/types';
 
 import { UpdateTodoInputs } from '../model/model';
 
@@ -11,19 +11,25 @@ type UpdateTodoProps = UpdateTodoInputs & {
 export const updateTodo = async ({
   id,
   ...obj
-}: UpdateTodoProps): Promise<{
-  data: Todo | null;
-  error: Error | null;
-}> => {
-  const updates = Object.keys(obj)
-    .filter((k) => obj[k] != null)
-    .reduce((a, k) => ({ ...a, [k]: obj[k] }), {});
+}: UpdateTodoProps): Promise<Response<Todo>> => {
+  try {
+    const updates = Object.keys(obj)
+      .filter((k) => obj[k] != null)
+      .reduce((a, k) => ({ ...a, [k]: obj[k] }), {});
 
-  const { data, error } = await supabase
-    .from<Todo>('todos')
-    .update(updates)
-    .eq('id', id)
-    .single();
+    const { data, error } = await supabase
+      .from<Todo>('todos')
+      .update(updates)
+      .eq('id', id)
+      .single();
+    if (error) {
+      throw new Error(error.message);
+    }
 
-  return { data, error: error ? new Error(error.message) : null };
+    return { data, error: null };
+  } catch (err) {
+    const error = err as Error;
+
+    return { data: null, error };
+  }
 };

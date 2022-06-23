@@ -10,10 +10,13 @@ const $user = createStore<User | null>(supabase.auth.user()).on(
   (_, payload) => payload,
 );
 
+const $userId = $user.map((user) => user?.id ?? null);
+
 export const events = {
   setUser,
 };
 
 export const selectors = {
   $user,
+  $userId,
 };

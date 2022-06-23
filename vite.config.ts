@@ -17,7 +17,12 @@ export default defineConfig({
       strategy: 'default',
       customSplitting: {
         'react-vendor': ['react', 'react-dom'],
-        'effector-vendor': ['effector', 'effector-react', '@effector/reflect'],
+        'effector-vendor': [
+          'effector',
+          'effector-react',
+          '@effector/reflect',
+          'patronum',
+        ],
         'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
         'supabase-vendor': ['@supabase/supabase-js'],
       },

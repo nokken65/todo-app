@@ -8,7 +8,7 @@ import { SearchIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 import { TodoList } from '~/shared/types';
 
-import { effects, formState, selectors } from '../model';
+import { searchFilter, searchFormState } from '../model';
 import { searchTodoListSchema } from '../validation';
 
 type SearchTodoListFormProps = {
@@ -64,8 +64,8 @@ const SearchTodoListFormView = ({
 export const SearchTodoListForm = reflect({
   view: SearchTodoListFormView,
   bind: {
-    searchQuery: selectors.$searchQuery,
-    onSubmit: effects.searchTodoListFx,
-    onBlur: formState.close,
+    searchQuery: searchFilter.$searchQuery,
+    onSubmit: searchFilter.searchTodoList,
+    onBlur: searchFormState.close,
   },
 });
