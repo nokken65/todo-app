@@ -9,6 +9,9 @@ export default defineConfig({
   plugins: [
     viteCompression({
       algorithm: 'brotliCompress',
+      compressionOptions: {
+        level: 11,
+      },
     }),
     viteCompression({
       algorithm: 'gzip',
@@ -25,6 +28,15 @@ export default defineConfig({
         ],
         'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
         'supabase-vendor': ['@supabase/supabase-js'],
+        'utils-vendor': [
+          'uuid',
+          'date-fns',
+          'lodash.flow',
+          'lodash.pickby',
+          'immer',
+          'clsx',
+        ],
+        'other-vendor': ['@idui/react-popover', 'react-indiana-drag-scroll'],
       },
     }),
     react(),
