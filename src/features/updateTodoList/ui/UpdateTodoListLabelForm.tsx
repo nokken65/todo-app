@@ -2,17 +2,16 @@ import { reflect } from '@effector/reflect';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
-import { UpdateTodoListInputs } from '~/entities/TodoList';
 import { Button } from '~/shared/components';
 import { EditIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 import { TodoList } from '~/shared/types';
 
-import { effects } from '../model';
+import { events } from '../model';
 import { updateTodoListLabelSchema } from '../validation';
 
 type UpdateTodoListLabelFormProps = Pick<TodoList, 'id' | 'label'> & {
-  onSubmit: (props: Pick<UpdateTodoListInputs, 'label' | 'id'>) => void;
+  onSubmit: (props: Pick<TodoList, 'label' | 'id'>) => void;
   onBlur: () => void;
 };
 
@@ -22,7 +21,7 @@ const UpdateTodoListLabelFormView = ({
   onSubmit,
   onBlur,
 }: UpdateTodoListLabelFormProps) => {
-  const methods = useForm<Pick<UpdateTodoListInputs, 'label'>>({
+  const methods = useForm<Pick<TodoList, 'label'>>({
     mode: 'onChange',
     resolver: yupResolver(updateTodoListLabelSchema),
     defaultValues: { label },
@@ -32,6 +31,7 @@ const UpdateTodoListLabelFormView = ({
     <Form
       {...methods}
       resetOnSubmitSuccessful
+      className='max-w-md'
       onBlur={onBlur}
       onSubmit={(data) => {
         if (data.label === label || !data.label) {
@@ -52,7 +52,7 @@ const UpdateTodoListLabelFormView = ({
             rounded={false}
           />
         }
-        className='!h-10 max-w-md '
+        className='h-10'
         name='label'
         placeholder='At work'
         type='text'
@@ -64,6 +64,6 @@ const UpdateTodoListLabelFormView = ({
 export const UpdateTodoListLabelForm = reflect({
   view: UpdateTodoListLabelFormView,
   bind: {
-    onSubmit: effects.updateTodoListLabelFx,
+    onSubmit: events.updateTodoListLabel,
   },
 });

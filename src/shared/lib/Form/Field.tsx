@@ -28,7 +28,7 @@ export const Field = ({
       control={control}
       name={name}
       render={({ field, fieldState, formState }) => (
-        <div className='relative flex flex-col gap-2'>
+        <div className='relative flex flex-col gap-2 w-full h-full'>
           {label && (
             <label className='text-sm text-gray-400 ' htmlFor={name}>
               {label}

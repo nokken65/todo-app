@@ -1,22 +1,22 @@
 import { supabase } from '~/shared/api';
 import type { Response, TodoList } from '~/shared/types';
 
-import type { GetTodoListsInputs } from '../model/model';
+import type { GetTodoListsByDateInputs } from '../model/model';
 
-type GetTodoListsProps = GetTodoListsInputs;
+type GetTodoListsProps = GetTodoListsByDateInputs;
 
 export const getTodoLists = async ({
   date,
-  label = '*',
 }: GetTodoListsProps): Promise<Response<TodoList[]>> => {
   try {
-    const queryString = new URLSearchParams(window.location.search).get('q');
+    // TODO: suffling todos position
     const { data, error } = await supabase
       .from<TodoList>('lists')
       .select('*, todos(*)')
       .eq('date', date)
-      .ilike('label', `%${queryString ?? label}%`)
-      .order('createdAt', { ascending: false });
+      .order('createdAt', { ascending: false })
+      .order('createdAt', { ascending: true, foreignTable: 'todos' })
+      .order('id', { ascending: false, foreignTable: 'todos' });
 
     if (error) {
       throw new Error(error.message);

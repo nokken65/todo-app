@@ -4,7 +4,7 @@ import { mkdir, writeFile } from 'fs/promises';
 import openapiTS from 'openapi-typescript';
 import { resolve } from 'path';
 
-dotenv.config();
+dotenv.config({ path: `.env.development` });
 
 const generateSupabaseTypes = async () => {
   const output = await openapiTS(

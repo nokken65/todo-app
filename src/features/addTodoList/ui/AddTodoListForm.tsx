@@ -7,7 +7,7 @@ import { Button } from '~/shared/components';
 import { AddIcon } from '~/shared/icons';
 import { Form } from '~/shared/lib';
 
-import { effects, formState } from '../model';
+import { events, formState } from '../model';
 import { addTodoListSchema } from '../validation';
 
 type AddTodoListFormProps = {
@@ -53,7 +53,7 @@ const AddTodoListFormView = ({ onSubmit, onBlur }: AddTodoListFormProps) => {
 export const AddTodoListForm = reflect({
   view: AddTodoListFormView,
   bind: {
-    onSubmit: effects.addTodoListFx,
+    onSubmit: events.addTodoList,
     onBlur: formState.close,
   },
 });

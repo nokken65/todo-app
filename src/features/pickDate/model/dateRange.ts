@@ -19,20 +19,12 @@ forward({
 });
 
 sample({
-  clock: updateDateRange,
+  clock: dateModel.selectors.$selectedDate,
+  source: todoListModel.selectors.$todoListsMap,
   target: todoListModel.effects.getTodoListsFx,
-  fn: () => ({}),
+  filter: (todoListsMap, selectedDate) => !todoListsMap[selectedDate],
 });
-
-// forward({
-//   from: updateDateRange,
-//   to: todoListModel.effects.getTodoListsFx,
-// });
 
 export const selectors = {
   $dateRange,
-};
-
-export const events = {
-  updateDateRange,
 };

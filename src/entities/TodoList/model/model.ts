@@ -1,8 +1,9 @@
 import { NullableOptional, TodoList } from '~/shared/types';
 
-export type GetTodoListsInputs = Pick<TodoList, 'date'> &
-  NullableOptional<Pick<TodoList, 'label'>>;
-export type AddTodoListInputs = Pick<TodoList, 'label' | 'date'>;
+export type GetTodoListsByDateInputs = Pick<TodoList, 'date'>;
+export type AddTodoListInputs = Omit<TodoList, 'todos'>;
 export type DeleteTodoListInputs = Pick<TodoList, 'id'>;
-export type UpdateTodoListInputs = Pick<TodoList, 'id'> &
-  NullableOptional<Pick<TodoList, 'label'>>;
+export type UpdateTodoListInputs = Pick<TodoList, 'id'> & {
+  updates: Pick<TodoList, 'updatedAt'> &
+    NullableOptional<Pick<TodoList, 'label'>>;
+};

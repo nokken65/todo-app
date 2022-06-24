@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { PropsWithChildren, useEffect, useRef } from 'react';
 import { FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
@@ -6,6 +7,7 @@ import { useOuterClick } from '~/shared/hooks';
 import { Field } from './Field';
 
 type FormProps<TFormValues> = PropsWithChildren<{
+  className?: string;
   resetOnSubmitSuccessful?: boolean;
   onSubmit: SubmitHandler<TFormValues>;
   onBlur?: () => void;
@@ -13,6 +15,7 @@ type FormProps<TFormValues> = PropsWithChildren<{
   UseFormReturn<TFormValues>;
 
 const Form = <TFormValues extends Record<string, any>>({
+  className,
   resetOnSubmitSuccessful,
   children,
   onSubmit,
@@ -38,7 +41,7 @@ const Form = <TFormValues extends Record<string, any>>({
   return (
     <FormProvider {...methods}>
       <form
-        className='flex flex-col w-full h-full gap-6'
+        className={clsx('flex flex-col w-full h-full gap-6', className)}
         ref={wrapperRef}
         onSubmit={methods.handleSubmit(onSubmit)}
       >

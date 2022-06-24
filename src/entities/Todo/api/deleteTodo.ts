@@ -1,5 +1,5 @@
 import { supabase } from '~/shared/api';
-import { Todo } from '~/shared/types';
+import type { Response, Todo } from '~/shared/types';
 
 import { DeleteTodoInputs } from '../model/model';
 
@@ -7,10 +7,21 @@ type DeleteTodoProps = DeleteTodoInputs;
 
 export const deleteTodo = async ({
   id,
-}: DeleteTodoProps): Promise<{
-  error: Error | null;
-}> => {
-  const { error } = await supabase.from<Todo>('todos').delete().match({ id });
+}: DeleteTodoProps): Promise<Response<{}>> => {
+  try {
+    const { data, error } = await supabase
+      .from<Todo>('todos')
+      .delete()
+      .match({ id });
 
-  return { error: error ? new Error(error.message) : null };
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { data, error: null };
+  } catch (err) {
+    const error = err as Error;
+
+    return { data: null, error };
+  }
 };

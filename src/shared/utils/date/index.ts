@@ -1,3 +1,4 @@
+export * from './dateToTimestamptz';
 export * from './format';
 export * from './formattedDistance';
 export * from './formattedRange';
