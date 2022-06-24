@@ -32,8 +32,10 @@ sample({
     const updatedAt = dateToTimestamptz(new Date());
     const updates: UpdateTodoListInputs = {
       id,
-      label,
-      updatedAt,
+      updates: {
+        label,
+        updatedAt,
+      },
     };
 
     return updates;

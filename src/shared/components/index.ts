@@ -1,6 +1,5 @@
 export * from './Button';
 export * from './Card';
-export * from './Checkbox';
 export * from './Form';
 export * from './Heading';
 export * from './Logo';

@@ -6,11 +6,11 @@ import {
   sample,
 } from 'effector';
 import { produce } from 'immer';
+import pickBy from 'lodash.pickby';
 
 import { dateModel } from '~/entities/Date';
 import {
   AddManyTodoInputs,
-  AddOneTodoInputs,
   DeleteTodoInputs,
   UpdateTodoInputs,
 } from '~/entities/Todo';
@@ -20,12 +20,12 @@ import { getTodoLists } from '../api';
 import type {
   AddTodoListInputs,
   DeleteTodoListInputs,
-  GetTodoListsInputs,
+  GetTodoListsByDateInputs,
   UpdateTodoListInputs,
 } from './model';
 
 const getTodoListsOriginalFx = createEffect<
-  GetTodoListsInputs,
+  GetTodoListsByDateInputs,
   { data: TodoList[]; date: DateString }
 >(async ({ date }) => {
   const { data, error } = await getTodoLists({ date });
@@ -53,7 +53,6 @@ const $todoListsMap = createStore<Record<DateString, TodoList[]>>({}).on(
     }),
 );
 
-const addOneTodo = createEvent<AddOneTodoInputs>();
 const addManyTodo = createEvent<AddManyTodoInputs>();
 const updateTodo = createEvent<UpdateTodoInputs>();
 const deleteTodo = createEvent<DeleteTodoInputs>();
@@ -75,18 +74,10 @@ const $todoLists = createStore<TodoList[]>([])
   )
   .on(updateTodoList, (state, payload) =>
     produce(state, (draft) => {
-      const updates = Object.keys(payload)
-        .filter((k) => payload[k] !== undefined)
-        .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
+      const updates = pickBy(payload.updates, (value) => Boolean(value));
 
       const index = draft.findIndex(({ id }) => id === payload.id);
       draft[index] = { ...draft[index], ...updates };
-    }),
-  )
-  .on(addOneTodo, (state, payload) =>
-    produce(state, (draft) => {
-      const index = draft.findIndex(({ id }) => id === payload.listId);
-      draft[index].todos.push(payload);
     }),
   )
   .on(addManyTodo, (state, payload) =>
@@ -94,25 +85,28 @@ const $todoLists = createStore<TodoList[]>([])
       const index = draft.findIndex(({ id }) => id === payload[0].listId);
       draft[index].todos.push(...payload);
     }),
+  )
+  .on(deleteTodo, (state, payload) =>
+    produce(state, (draft) => {
+      const listIndex = draft.findIndex(({ id }) => id === payload.listId);
+      const todoIndex = draft[listIndex].todos.findIndex(
+        ({ id }) => id === payload.id,
+      );
+      draft[listIndex].todos.splice(todoIndex, 1);
+    }),
+  )
+  .on(updateTodo, (state, payload) =>
+    produce(state, (draft) => {
+      const listIndex = draft.findIndex(({ id }) => id === payload.listId);
+      const todoIndex = draft[listIndex].todos.findIndex(
+        ({ id }) => id === payload.id,
+      );
+      draft[listIndex].todos[todoIndex] = {
+        ...draft[listIndex].todos[todoIndex],
+        ...payload.updates,
+      };
+    }),
   );
-// .on(deleteTodo, (state, payload) =>
-//   produce(state, (draft) => {
-//     const listIndex = draft.findIndex(({ id }) => id === payload.listId);
-//     const todoIndex = draft[listIndex].todos.findIndex(
-//       ({ id }) => id === payload.id,
-//     );
-//     draft[listIndex].todos.splice(todoIndex, 1);
-//   }),
-// )
-// .on(updateTodo, (state, payload) =>
-//   produce(state, (draft) => {
-//     const listIndex = draft.findIndex(({ id }) => id === payload.listId);
-//     const todoIndex = draft[listIndex].todos.findIndex(
-//       ({ id }) => id === payload.todo.id,
-//     );
-//     draft[listIndex].todos[todoIndex] = payload.todo;
-//   }),
-// );
 
 const $todoListsIsLoading = getTodoListsFx.pending;
 const $todoListsIsEmpty = $todoLists.map((list) => list.length === 0);
@@ -132,7 +126,6 @@ sample({
 
 sample({
   clock: [
-    addOneTodo,
     addManyTodo,
     deleteTodo,
     updateTodo,
@@ -175,7 +168,6 @@ export const events = {
   upsertTodoList,
   updateTodoList,
   deleteTodoList,
-  addOneTodo,
   addManyTodo,
   updateTodo,
   deleteTodo,

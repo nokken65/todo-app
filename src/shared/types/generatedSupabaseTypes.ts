@@ -250,16 +250,18 @@ export type definitions = {
   todos: {
     /**
      * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
      * @default extensions.uuid_generate_v4()
      */
     id: string;
     /** Format: text */
-    text?: string;
+    text: string;
     /**
      * Format: boolean
      * @default false
      */
-    isComplete?: boolean;
+    isComplete: boolean;
     /** Format: uuid */
     userId: string;
     /**

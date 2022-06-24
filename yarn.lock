@@ -622,6 +622,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.pickby@npm:^4.6.7":
+  version: 4.6.7
+  resolution: "@types/lodash.pickby@npm:4.6.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 1a4d85dd4ce371352b65dead78e1c6d89c4d59c440bfd9b27023b1113c8610115f2dda17c056b94697f7bfbd947bd8abfe0afd5195b65e2675b404e0e1542fae
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:*, @types/lodash@npm:^4.14.175":
   version: 4.14.182
   resolution: "@types/lodash@npm:4.14.182"
@@ -3434,6 +3443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.pickby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.pickby@npm:4.6.0"
+  checksum: a554d898c15bcd3218e4005b95b5146210bd862010c7d242d17106ee36aed9b9209a858ce974136ab1faadd86a82297761c206fda7f1886278bac827145c5536
+  languageName: node
+  linkType: hard
+
 "lodash@npm:^4.17.14, lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
@@ -5024,6 +5040,7 @@ __metadata:
     "@idui/react-popover": ^3.1.0
     "@supabase/supabase-js": ^1.35.3
     "@types/lodash.flow": ^3.5.7
+    "@types/lodash.pickby": ^4.6.7
     "@types/node": ^17.0.42
     "@types/react": ^18.0.0
     "@types/react-dom": ^18.0.0
@@ -5050,6 +5067,7 @@ __metadata:
     http-server: ^14.1.0
     immer: ^9.0.15
     lodash.flow: ^3.5.0
+    lodash.pickby: ^4.6.0
     openapi-typescript: ^5.4.0
     patronum: ^1.8.3
     postcss: ^8.4.14
