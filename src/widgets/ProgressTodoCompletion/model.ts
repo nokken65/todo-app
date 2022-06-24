@@ -1,20 +1,15 @@
-import { filterTodoListModel } from '~/features/filterTodoList';
+import { combine } from 'effector';
 
-const $progress = filterTodoListModel.selectors.$filteredTodoLists.map(
-  (lists) => {
-    if (lists.length === 0) {
-      return 0;
-    }
-    const todos = lists.flatMap((list) => list.todos ?? []);
+import { todoModel } from '~/entities/Todo';
 
-    if (todos.length === 0) {
-      return 0;
-    }
-    const todosCount = todos.length;
-    const completedCount = todos.filter(({ isComplete }) => isComplete).length;
+const $progress = combine(todoModel.selectors.$todos, (todos) => {
+  if (todos.length === 0) {
+    return 0;
+  }
 
-    return (completedCount * 100) / todosCount;
-  },
-);
+  const completedCount = todos.filter(({ isComplete }) => isComplete).length;
+
+  return (completedCount * 100) / todos.length;
+});
 
 export { $progress };

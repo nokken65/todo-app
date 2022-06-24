@@ -3,20 +3,17 @@ import type { Response, TodoList } from '~/shared/types';
 
 import type { GetTodoListsByDateInputs } from '../model/model';
 
-type GetTodoListsProps = GetTodoListsByDateInputs;
+type GetTodoListsByDateProps = GetTodoListsByDateInputs;
 
-export const getTodoLists = async ({
+export const getTodoListsByDate = async ({
   date,
-}: GetTodoListsProps): Promise<Response<TodoList[]>> => {
+}: GetTodoListsByDateProps): Promise<Response<TodoList[]>> => {
   try {
-    // TODO: suffling todos position
     const { data, error } = await supabase
       .from<TodoList>('lists')
-      .select('*, todos(*)')
+      .select('*')
       .eq('date', date)
-      .order('createdAt', { ascending: false })
-      .order('createdAt', { ascending: true, foreignTable: 'todos' })
-      .order('id', { ascending: false, foreignTable: 'todos' });
+      .order('createdAt', { ascending: false });
 
     if (error) {
       throw new Error(error.message);

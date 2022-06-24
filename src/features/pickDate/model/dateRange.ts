@@ -1,6 +1,7 @@
 import { createEvent, createStore, forward, sample } from 'effector';
 
 import { dateModel } from '~/entities/Date';
+import { todoModel } from '~/entities/Todo';
 import { todoListModel } from '~/entities/TodoList';
 import { DateString } from '~/shared/types';
 import { format, formattedDistance } from '~/shared/utils';
@@ -21,8 +22,15 @@ forward({
 sample({
   clock: dateModel.selectors.$selectedDate,
   source: todoListModel.selectors.$todoListsMap,
-  target: todoListModel.effects.getTodoListsFx,
-  filter: (todoListsMap, selectedDate) => !todoListsMap[selectedDate],
+  target: todoListModel.effects.getTodoListsByDateFx,
+  filter: (todoListsMap, date) => !todoListsMap[date],
+});
+
+sample({
+  clock: dateModel.selectors.$selectedDate,
+  source: todoModel.selectors.$todosMapByDate,
+  target: todoModel.effects.getTodosByDateFx,
+  filter: (todosMapByDate, date) => !todosMapByDate[date],
 });
 
 export const selectors = {

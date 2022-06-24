@@ -6,17 +6,11 @@ import {
   sample,
 } from 'effector';
 import { produce } from 'immer';
-import pickBy from 'lodash.pickby';
 
 import { dateModel } from '~/entities/Date';
-import {
-  AddManyTodoInputs,
-  DeleteTodoInputs,
-  UpdateTodoInputs,
-} from '~/entities/Todo';
 import type { DateString, TodoList } from '~/shared/types';
 
-import { getTodoLists } from '../api';
+import { getTodoListsByDate } from '../api';
 import type {
   AddTodoListInputs,
   DeleteTodoListInputs,
@@ -24,21 +18,25 @@ import type {
   UpdateTodoListInputs,
 } from './model';
 
-const getTodoListsOriginalFx = createEffect<
+const getTodoListsByDateOriginalFx = createEffect<
   GetTodoListsByDateInputs,
-  { data: TodoList[]; date: DateString }
+  TodoList[]
 >(async ({ date }) => {
-  const { data, error } = await getTodoLists({ date });
+  const { data, error } = await getTodoListsByDate({ date });
 
   if (error) {
     throw error;
   }
 
-  return { data: data ?? [], date };
+  if (!data) {
+    throw new Error('Cannot find todo lists');
+  }
+
+  return data;
 });
 
-const getTodoListsFx = attach({
-  effect: getTodoListsOriginalFx,
+const getTodoListsByDateFx = attach({
+  effect: getTodoListsByDateOriginalFx,
   source: dateModel.selectors.$selectedDate,
   mapParams: (_: void, date) => ({
     date,
@@ -46,74 +44,42 @@ const getTodoListsFx = attach({
 });
 
 const $todoListsMap = createStore<Record<DateString, TodoList[]>>({}).on(
-  getTodoListsFx.doneData,
+  getTodoListsByDateFx.doneData,
   (state, payload) =>
     produce(state, (draft) => {
-      draft[payload.date] = payload.data;
+      draft[payload[0].date] = payload;
     }),
 );
 
-const addManyTodo = createEvent<AddManyTodoInputs>();
-const updateTodo = createEvent<UpdateTodoInputs>();
-const deleteTodo = createEvent<DeleteTodoInputs>();
-const upsertTodoList = createEvent<AddTodoListInputs>();
+const addTodoList = createEvent<AddTodoListInputs>();
 const updateTodoList = createEvent<UpdateTodoListInputs>();
 const deleteTodoList = createEvent<DeleteTodoListInputs>();
 
 const $todoLists = createStore<TodoList[]>([])
-  .on(upsertTodoList, (state, payload) =>
+  .on(addTodoList, (state, payload) =>
     produce(state, (draft) => {
-      draft.unshift({ ...payload, todos: [] });
+      draft.unshift({ ...payload });
+    }),
+  )
+  .on(updateTodoList, (state, payload) =>
+    produce(state, (draft) => {
+      const index = draft.findIndex(({ id }) => id === payload.id);
+      if (index !== -1) draft[index] = { ...draft[index], ...payload.updates };
     }),
   )
   .on(deleteTodoList, (state, payload) =>
     produce(state, (draft) => {
       const index = draft.findIndex(({ id }) => id === payload.id);
-      draft.splice(index, 1);
-    }),
-  )
-  .on(updateTodoList, (state, payload) =>
-    produce(state, (draft) => {
-      const updates = pickBy(payload.updates, (value) => Boolean(value));
-
-      const index = draft.findIndex(({ id }) => id === payload.id);
-      draft[index] = { ...draft[index], ...updates };
-    }),
-  )
-  .on(addManyTodo, (state, payload) =>
-    produce(state, (draft) => {
-      const index = draft.findIndex(({ id }) => id === payload[0].listId);
-      draft[index].todos.push(...payload);
-    }),
-  )
-  .on(deleteTodo, (state, payload) =>
-    produce(state, (draft) => {
-      const listIndex = draft.findIndex(({ id }) => id === payload.listId);
-      const todoIndex = draft[listIndex].todos.findIndex(
-        ({ id }) => id === payload.id,
-      );
-      draft[listIndex].todos.splice(todoIndex, 1);
-    }),
-  )
-  .on(updateTodo, (state, payload) =>
-    produce(state, (draft) => {
-      const listIndex = draft.findIndex(({ id }) => id === payload.listId);
-      const todoIndex = draft[listIndex].todos.findIndex(
-        ({ id }) => id === payload.id,
-      );
-      draft[listIndex].todos[todoIndex] = {
-        ...draft[listIndex].todos[todoIndex],
-        ...payload.updates,
-      };
+      if (index !== -1) draft.splice(index, 1);
     }),
   );
 
-const $todoListsIsLoading = getTodoListsFx.pending;
+const $todoListsIsLoading = getTodoListsByDateFx.pending;
 const $todoListsIsEmpty = $todoLists.map((list) => list.length === 0);
 const $todoListsCount = $todoLists.map((list) => list.length);
 
 sample({
-  clock: [dateModel.selectors.$selectedDate, getTodoListsFx.doneData],
+  clock: [dateModel.selectors.$selectedDate, getTodoListsByDateFx.doneData],
   source: {
     todoListsMap: $todoListsMap,
     selectedDate: dateModel.selectors.$selectedDate,
@@ -125,29 +91,18 @@ sample({
 });
 
 sample({
-  clock: [
-    addManyTodo,
-    deleteTodo,
-    updateTodo,
-    upsertTodoList,
-    deleteTodoList,
-    updateTodoList,
-  ],
+  clock: [addTodoList, deleteTodoList, updateTodoList],
   source: {
     todoListsMap: $todoListsMap,
     todoLists: $todoLists,
     date: dateModel.selectors.$selectedDate,
   },
   target: $todoListsMap,
-  fn: ({ todoListsMap, todoLists, date }) => {
-    return produce(todoListsMap, (draft) => {
+  fn: ({ todoListsMap, todoLists, date }) =>
+    produce(todoListsMap, (draft) => {
       draft[date] = todoLists;
-    });
-  },
+    }),
 });
-
-// error watcher
-getTodoListsFx.fail.watch(console.error);
 
 // $todoListsMap.watch((state) => {
 //   console.log('listsMap ---- ', state);
@@ -165,14 +120,11 @@ export const selectors = {
 };
 
 export const events = {
-  upsertTodoList,
+  addTodoList,
   updateTodoList,
   deleteTodoList,
-  addManyTodo,
-  updateTodo,
-  deleteTodo,
 };
 
 export const effects = {
-  getTodoListsFx,
+  getTodoListsByDateFx,
 };

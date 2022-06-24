@@ -1,9 +1,10 @@
 import { reflect } from '@effector/reflect';
 
-import { addTodoListModel } from '~/features/addTodoList';
-import { AddTodoListForm } from '~/features/addTodoList/ui';
 import { Button } from '~/shared/components';
 import { AddIcon } from '~/shared/icons';
+
+import { formState } from '../model';
+import { AddTodoListForm } from './AddTodoListForm';
 
 type AddTodoListProps = {
   isOpen: boolean;
@@ -23,7 +24,7 @@ const AddTodoListView = ({ isOpen, openForm }: AddTodoListProps) => {
 export const AddTodoList = reflect({
   view: AddTodoListView,
   bind: {
-    isOpen: addTodoListModel.formState.$isOpen,
-    openForm: addTodoListModel.formState.open,
+    isOpen: formState.$isOpen,
+    openForm: formState.open,
   },
 });

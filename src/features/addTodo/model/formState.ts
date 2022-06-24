@@ -16,7 +16,7 @@ const { open, close } = createApi($isOpen, {
     }),
 });
 
-$isOpen.reset(todoListModel.effects.getTodoListsFx);
+$isOpen.reset(todoListModel.effects.getTodoListsByDateFx);
 
 export const formState = {
   $isOpen,
