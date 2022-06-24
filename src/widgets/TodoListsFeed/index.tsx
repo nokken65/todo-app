@@ -1,6 +1,7 @@
 import { variant } from '@effector/reflect';
 import { combine } from 'effector';
 
+import { todoModel } from '~/entities/Todo';
 import { todoListModel, TodoListsEmpty } from '~/entities/TodoList';
 import { LoaderRingIcon } from '~/shared/icons';
 
@@ -30,7 +31,8 @@ const TodoListsFeedContent = variant({
   },
   hooks: {
     mounted: () => {
-      todoListModel.effects.getTodoListsFx();
+      todoListModel.effects.getTodoListsByDateFx();
+      todoModel.effects.getTodosByDateFx();
     },
   },
 });

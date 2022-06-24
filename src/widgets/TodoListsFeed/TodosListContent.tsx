@@ -1,7 +1,8 @@
 import { reflect } from '@effector/reflect';
+import { useStoreMap } from 'effector-react';
 import { memo } from 'react';
 
-import { TodoItem } from '~/entities/Todo';
+import { TodoItem, todoModel } from '~/entities/Todo';
 import { updateTodoModel } from '~/features/updateTodo';
 import { Todo } from '~/shared/types';
 
@@ -34,18 +35,26 @@ const TodosListItemView = ({
   );
 };
 
-const TodosListItem = reflect({
-  view: TodosListItemView,
-  bind: {
-    updateTodoCompletion: updateTodoModel.events.updateTodoCompletion,
-  },
-});
+const TodosListItem = memo(
+  reflect({
+    view: TodosListItemView,
+    bind: {
+      updateTodoCompletion: updateTodoModel.events.updateTodoCompletion,
+    },
+  }),
+);
 
 type TodosListContentProps = {
-  todos: Todo[];
+  listId: string;
 };
 
-const TodosListContentView = ({ todos }: TodosListContentProps) => {
+const TodosListContentView = ({ listId }: TodosListContentProps) => {
+  const todos = useStoreMap({
+    store: todoModel.selectors.$todosMapByList,
+    keys: [listId],
+    fn: (state, [id]) => state[id] ?? [],
+  });
+
   return (
     <ul className='flex flex-col mb-4'>
       {todos.map((todo) => (

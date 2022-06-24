@@ -35,7 +35,7 @@ sample({
     date: dateModel.selectors.$selectedDate,
     userId: userModel.selectors.$userId,
   },
-  target: [todoListModel.events.upsertTodoList, addTodoListFx],
+  target: [todoListModel.events.addTodoList, addTodoListFx],
   fn: ({ date, userId }, { label }) => {
     const createdAt = dateToTimestamptz(new Date());
     const todoList: AddTodoListInputs = {

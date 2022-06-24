@@ -1,7 +1,7 @@
 import { NullableOptional, Todo } from '~/shared/types';
 
-export type AddOneTodoInputs = Todo;
-export type AddManyTodoInputs = Todo[];
+export type GetTodosByDateInputs = Pick<Todo, 'date'>;
+export type AddManyTodosInputs = { todos: Todo[] } & Pick<Todo, 'listId'>;
 export type DeleteTodoInputs = Pick<Todo, 'id' | 'listId'>;
 export type UpdateTodoInputs = Pick<Todo, 'id' | 'listId'> & {
   updates: Pick<Todo, 'updatedAt'> &

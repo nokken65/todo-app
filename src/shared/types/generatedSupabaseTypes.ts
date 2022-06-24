@@ -125,6 +125,7 @@ export type paths = {
           listId?: parameters['rowFilter.todos.listId'];
           createdAt?: parameters['rowFilter.todos.createdAt'];
           updatedAt?: parameters['rowFilter.todos.updatedAt'];
+          date?: parameters['rowFilter.todos.date'];
           /** Filtering Columns */
           select?: parameters['select'];
           /** Ordering */
@@ -182,6 +183,7 @@ export type paths = {
           listId?: parameters['rowFilter.todos.listId'];
           createdAt?: parameters['rowFilter.todos.createdAt'];
           updatedAt?: parameters['rowFilter.todos.updatedAt'];
+          date?: parameters['rowFilter.todos.date'];
         };
         header: {
           /** Preference */
@@ -203,6 +205,7 @@ export type paths = {
           listId?: parameters['rowFilter.todos.listId'];
           createdAt?: parameters['rowFilter.todos.createdAt'];
           updatedAt?: parameters['rowFilter.todos.updatedAt'];
+          date?: parameters['rowFilter.todos.date'];
         };
         body: {
           /** todos */
@@ -252,15 +255,11 @@ export type definitions = {
      * Format: uuid
      * @description Note:
      * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
      */
     id: string;
     /** Format: text */
     text: string;
-    /**
-     * Format: boolean
-     * @default false
-     */
+    /** Format: boolean */
     isComplete: boolean;
     /** Format: uuid */
     userId: string;
@@ -270,16 +269,12 @@ export type definitions = {
      * This is a Foreign Key to `lists.id`.<fk table='lists' column='id'/>
      */
     listId: string;
-    /**
-     * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
-     */
+    /** Format: timestamp with time zone */
     createdAt: string;
-    /**
-     * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
-     */
+    /** Format: timestamp with time zone */
     updatedAt: string;
+    /** Format: date */
+    date: string;
   };
 };
 
@@ -346,6 +341,8 @@ export type parameters = {
   'rowFilter.todos.createdAt': string;
   /** Format: timestamp with time zone */
   'rowFilter.todos.updatedAt': string;
+  /** Format: date */
+  'rowFilter.todos.date': string;
 };
 
 export type operations = {};

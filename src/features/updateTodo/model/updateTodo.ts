@@ -1,7 +1,6 @@
 import { createEffect, createEvent, sample } from 'effector';
 
-import { todoApi, UpdateTodoInputs } from '~/entities/Todo';
-import { todoListModel } from '~/entities/TodoList';
+import { todoApi, todoModel, UpdateTodoInputs } from '~/entities/Todo';
 import { Todo } from '~/shared/types';
 import { dateToTimestamptz } from '~/shared/utils';
 
@@ -23,7 +22,7 @@ const updateTodoCompletion =
 
 sample({
   clock: updateTodoCompletion,
-  target: [todoListModel.events.updateTodo, updateTodoFx],
+  target: [todoModel.events.updateTodo, updateTodoFx],
   fn: ({ id, listId, isComplete }) => {
     const updatedAt = dateToTimestamptz(new Date());
     const updates: UpdateTodoInputs = {

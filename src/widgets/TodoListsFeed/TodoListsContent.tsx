@@ -79,7 +79,7 @@ const TodoListItemView = ({
           )
         }
       >
-        <TodosListContent todos={todoList.todos} />
+        <TodosListContent listId={todoList.id} />
         <div className='flex w-full mt-auto -mb-11'>
           {addTodoFormIsOpen ? (
             <AddTodoForm

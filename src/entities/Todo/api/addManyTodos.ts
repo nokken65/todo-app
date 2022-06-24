@@ -1,13 +1,13 @@
 import { supabase } from '~/shared/api';
 import type { Response, Todo } from '~/shared/types';
 
-import { AddManyTodoInputs } from '../model/model';
+import { AddManyTodosInputs } from '../model/model';
 
-type AddManyTodoProps = AddManyTodoInputs;
+type AddManyTodosProps = AddManyTodosInputs;
 
-export const addManyTodo = async (
-  todos: AddManyTodoProps,
-): Promise<Response<Todo[]>> => {
+export const addManyTodos = async ({
+  todos,
+}: AddManyTodosProps): Promise<Response<Todo[]>> => {
   try {
     const { data, error } = await supabase.from<Todo>('todos').insert(todos);
 
