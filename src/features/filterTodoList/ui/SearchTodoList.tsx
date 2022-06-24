@@ -1,11 +1,10 @@
 import { reflect } from '@effector/reflect';
 
-import {
-  filterTodoListModel,
-  SearchTodoListForm,
-} from '~/features/filterTodoList';
 import { Button } from '~/shared/components';
 import { SearchIcon } from '~/shared/icons';
+
+import { searchFormState } from '../model';
+import { SearchTodoListForm } from './SearchTodoListForm';
 
 type SearchTodoListProps = {
   isOpen: boolean;
@@ -25,7 +24,7 @@ const SearchTodoListView = ({ isOpen, openForm }: SearchTodoListProps) => {
 export const SearchTodoList = reflect({
   view: SearchTodoListView,
   bind: {
-    isOpen: filterTodoListModel.searchFormState.$isOpen,
-    openForm: filterTodoListModel.searchFormState.open,
+    isOpen: searchFormState.$isOpen,
+    openForm: searchFormState.open,
   },
 });

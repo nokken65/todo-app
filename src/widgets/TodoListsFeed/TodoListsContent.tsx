@@ -1,7 +1,6 @@
 import { list } from '@effector/reflect';
 import { useStoreMap } from 'effector-react';
 
-import { TodoItem } from '~/entities/Todo';
 import {
   TodoListActionsPopover,
   TodoListCard,
@@ -10,7 +9,6 @@ import {
 import { AddTodoForm, addTodoModel } from '~/features/addTodo';
 import { deleteTodoListModel } from '~/features/deleteTodoList';
 import { filterTodoListModel } from '~/features/filterTodoList';
-import { updateTodoModel } from '~/features/updateTodo';
 import {
   UpdateTodoListLabelForm,
   updateTodoListModel,
@@ -18,6 +16,8 @@ import {
 import { Button } from '~/shared/components';
 import { AddIcon } from '~/shared/icons';
 import type { TodoList } from '~/shared/types';
+
+import { TodosListContent } from './TodosListContent';
 
 type TodoListItemProps = {
   todoList: TodoList;
@@ -79,24 +79,7 @@ const TodoListItemView = ({
           )
         }
       >
-        <ul className='flex flex-col mb-4'>
-          {todoList.todos &&
-            todoList.todos.map((todo) => (
-              <li key={todo.id}>
-                <TodoItem
-                  isComplete={todo.isComplete}
-                  text={todo.text}
-                  onComplete={() =>
-                    updateTodoModel.events.updateTodoCompletion({
-                      id: todo.id,
-                      listId: todo.listId,
-                      isComplete: !todo.isComplete,
-                    })
-                  }
-                />
-              </li>
-            ))}
-        </ul>
+        <TodosListContent todos={todoList.todos} />
         <div className='flex w-full mt-auto -mb-11'>
           {addTodoFormIsOpen ? (
             <AddTodoForm
@@ -117,7 +100,7 @@ const TodoListItemView = ({
   );
 };
 
-const TodoListList = list({
+const TodoListsList = list({
   view: TodoListItemView,
   source: filterTodoListModel.selectors.$filteredTodoLists,
   bind: {
@@ -135,7 +118,7 @@ const TodoListList = list({
 
 const TodoListsContent = () => (
   <ul className='grid h-full grid-cols-3 3xl:grid-cols-2 gap-10 xl:flex xl:flex-col'>
-    <TodoListList />
+    <TodoListsList />
   </ul>
 );
 
