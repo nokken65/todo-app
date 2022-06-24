@@ -51,78 +51,50 @@ const addManyTodos = createEvent<AddManyTodosInputs>();
 const updateTodo = createEvent<UpdateTodoInputs>();
 const deleteTodo = createEvent<DeleteTodoInputs>();
 
-const $todosMapByList = createStore<Record<string, Todo[]>>({})
+const $todos = createStore<Todo[]>([])
   .on(addManyTodos, (state, payload) =>
     produce(state, (draft) => {
-      draft[payload.listId] = [
-        ...(draft[payload.listId] ?? []),
-        ...payload.todos,
-      ];
+      draft.push(...payload.todos);
     }),
   )
   .on(updateTodo, (state, payload) =>
     produce(state, (draft) => {
-      const index = draft[payload.listId].findIndex(
-        ({ id }) => id === payload.id,
-      );
-      draft[payload.listId][index] = {
-        ...draft[payload.listId][index],
-        ...payload.updates,
-      };
+      const index = draft.findIndex(({ id }) => id === payload.id);
+      if (index !== -1) draft[index] = { ...draft[index], ...payload.updates };
     }),
   )
   .on(deleteTodo, (state, payload) =>
     produce(state, (draft) => {
-      const index = draft[payload.listId].findIndex(
-        ({ id }) => id === payload.id,
-      );
-      draft[payload.listId].splice(index, 1);
+      const index = draft.findIndex(({ id }) => id === payload.id);
+      if (index !== -1) draft.splice(index, 1);
     }),
   );
 
 const $todosIsLoading = getTodosByDateFx.pending;
-const $todosCount = $todosMapByList.map((todosMap) =>
-  Object.keys(todosMap).reduce((count, key) => count + todosMap[key].length, 0),
-);
+const $todosCount = $todos.map((todos) => todos.length);
 
 sample({
   clock: [dateModel.selectors.$selectedDate, getTodosByDateFx.doneData],
   source: {
     date: dateModel.selectors.$selectedDate,
     todosMapByDate: $todosMapByDate,
-    // todosMapByList: $todosMapByList,
   },
-  target: $todosMapByList,
+  target: $todos,
   filter: ({ todosMapByDate, date }) => Boolean(todosMapByDate[date]),
-  fn: ({ date, todosMapByDate }) => {
-    const arr: Record<string, Todo[]> = {};
-    todosMapByDate[date].forEach((todo) => {
-      arr[todo.listId] = [...(arr[todo.listId] ?? []), todo];
-    });
-
-    return arr;
-  },
+  fn: ({ date, todosMapByDate }) => todosMapByDate[date],
 });
 
 sample({
   clock: [addManyTodos, updateTodo, deleteTodo],
   source: {
     date: dateModel.selectors.$selectedDate,
-    todosMapByList: $todosMapByList,
+    todos: $todos,
     todosMapByDate: $todosMapByDate,
   },
   target: $todosMapByDate,
-  fn: ({ date, todosMapByList, todosMapByDate }) =>
+  fn: ({ date, todos, todosMapByDate }) =>
     produce(todosMapByDate, (draft) => {
-      const arr: Todo[] = [];
-
-      Object.keys(todosMapByList).forEach((key) => {
-        todosMapByList[key].forEach((todo) => {
-          arr.push(todo);
-        });
-      });
-
-      draft[date] = arr;
+      draft[date] = todos;
     }),
 });
 
@@ -131,7 +103,7 @@ sample({
 
 export const selectors = {
   $todosMapByDate,
-  $todosMapByList,
+  $todos,
   $todosIsLoading,
   $todosCount,
 };

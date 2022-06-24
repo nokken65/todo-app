@@ -20,7 +20,7 @@ import type {
 
 const getTodoListsByDateOriginalFx = createEffect<
   GetTodoListsByDateInputs,
-  { data: TodoList[]; date: DateString }
+  TodoList[]
 >(async ({ date }) => {
   const { data, error } = await getTodoListsByDate({ date });
 
@@ -28,7 +28,11 @@ const getTodoListsByDateOriginalFx = createEffect<
     throw error;
   }
 
-  return { data: data ?? [], date };
+  if (!data) {
+    throw new Error('Cannot find todo lists');
+  }
+
+  return data;
 });
 
 const getTodoListsByDateFx = attach({
@@ -43,7 +47,7 @@ const $todoListsMap = createStore<Record<DateString, TodoList[]>>({}).on(
   getTodoListsByDateFx.doneData,
   (state, payload) =>
     produce(state, (draft) => {
-      draft[payload.date] = payload.data;
+      draft[payload[0].date] = payload;
     }),
 );
 
@@ -60,13 +64,13 @@ const $todoLists = createStore<TodoList[]>([])
   .on(updateTodoList, (state, payload) =>
     produce(state, (draft) => {
       const index = draft.findIndex(({ id }) => id === payload.id);
-      draft[index] = { ...draft[index], ...payload.updates };
+      if (index !== -1) draft[index] = { ...draft[index], ...payload.updates };
     }),
   )
   .on(deleteTodoList, (state, payload) =>
     produce(state, (draft) => {
       const index = draft.findIndex(({ id }) => id === payload.id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
     }),
   );
 
@@ -99,9 +103,6 @@ sample({
       draft[date] = todoLists;
     }),
 });
-
-// error watcher
-getTodoListsByDateFx.fail.watch(console.error);
 
 // $todoListsMap.watch((state) => {
 //   console.log('listsMap ---- ', state);

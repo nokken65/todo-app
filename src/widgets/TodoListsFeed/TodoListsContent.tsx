@@ -6,25 +6,21 @@ import {
   TodoListCard,
   TodoListLabel,
 } from '~/entities/TodoList';
-import { AddTodoForm, addTodoModel } from '~/features/addTodo';
+import { AddTodo } from '~/features/addTodo';
 import { deleteTodoListModel } from '~/features/deleteTodoList';
 import { filterTodoListModel } from '~/features/filterTodoList';
 import {
   UpdateTodoListLabelForm,
   updateTodoListModel,
 } from '~/features/updateTodoList';
-import { Button } from '~/shared/components';
-import { AddIcon } from '~/shared/icons';
 import type { TodoList } from '~/shared/types';
 
-import { TodosListContent } from './TodosListContent';
+import { TodosContent } from './TodosContent';
 
 type TodoListItemProps = {
   todoList: TodoList;
   openTodoListLabelForm: (id: string) => void;
   closeTodoListLabelForm: (id: string) => void;
-  openAddTodoForm: (id: string) => void;
-  closeAddTodoForm: (id: string) => void;
   deleteTodoList: (props: Pick<TodoList, 'id'>) => void;
 };
 
@@ -32,17 +28,10 @@ const TodoListItemView = ({
   todoList,
   openTodoListLabelForm,
   closeTodoListLabelForm,
-  openAddTodoForm,
-  closeAddTodoForm,
   deleteTodoList,
 }: TodoListItemProps) => {
   const todoListLabelFormIsOpen = useStoreMap({
     store: updateTodoListModel.labelFormState.$isOpen,
-    keys: [todoList.id],
-    fn: (state, [id]) => state[id],
-  });
-  const addTodoFormIsOpen = useStoreMap({
-    store: addTodoModel.formState.$isOpen,
     keys: [todoList.id],
     fn: (state, [id]) => state[id],
   });
@@ -79,22 +68,8 @@ const TodoListItemView = ({
           )
         }
       >
-        <TodosListContent listId={todoList.id} />
-        <div className='flex w-full mt-auto -mb-11'>
-          {addTodoFormIsOpen ? (
-            <AddTodoForm
-              listId={todoList.id}
-              onBlur={() => closeAddTodoForm(todoList.id)}
-            />
-          ) : (
-            <Button
-              className='w-10 h-10 ml-auto'
-              onClick={() => openAddTodoForm(todoList.id)}
-            >
-              <AddIcon className='w-4 h-4' />
-            </Button>
-          )}
-        </div>
+        <TodosContent listId={todoList.id} />
+        <AddTodo listId={todoList.id} />
       </TodoListCard>
     </li>
   );
@@ -107,8 +82,6 @@ const TodoListsList = list({
     deleteTodoList: deleteTodoListModel.events.deleteTodoList,
     openTodoListLabelForm: updateTodoListModel.labelFormState.open,
     closeTodoListLabelForm: updateTodoListModel.labelFormState.close,
-    openAddTodoForm: addTodoModel.formState.open,
-    closeAddTodoForm: addTodoModel.formState.close,
   },
   mapItem: {
     todoList: (_list) => _list,
