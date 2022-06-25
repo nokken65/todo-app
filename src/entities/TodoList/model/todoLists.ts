@@ -47,7 +47,7 @@ const $todoListsMap = createStore<Record<DateString, TodoList[]>>({}).on(
   getTodoListsByDateFx.doneData,
   (state, payload) =>
     produce(state, (draft) => {
-      draft[payload[0].date] = payload;
+      if (payload.length !== 0) draft[payload[0].date] = payload;
     }),
 );
 

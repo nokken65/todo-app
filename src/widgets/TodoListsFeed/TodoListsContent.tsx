@@ -1,5 +1,5 @@
-import { list } from '@effector/reflect';
-import { useStoreMap } from 'effector-react';
+import { reflect } from '@effector/reflect';
+import { useList, useStoreMap } from 'effector-react';
 
 import {
   TodoListActionsPopover,
@@ -17,82 +17,84 @@ import type { TodoList } from '~/shared/types';
 
 import { TodosContent } from './TodosContent';
 
-type TodoListItemProps = {
-  todoList: TodoList;
+type TodoListsItemProps = {
+  list: TodoList;
   openTodoListLabelForm: (id: string) => void;
   closeTodoListLabelForm: (id: string) => void;
   deleteTodoList: (props: Pick<TodoList, 'id'>) => void;
 };
 
-const TodoListItemView = ({
-  todoList,
+const TodoListsItemView = ({
+  list,
   openTodoListLabelForm,
   closeTodoListLabelForm,
   deleteTodoList,
-}: TodoListItemProps) => {
-  const todoListLabelFormIsOpen = useStoreMap({
+}: TodoListsItemProps) => {
+  const isOpenLabelForm = useStoreMap({
     store: updateTodoListModel.labelFormState.$isOpen,
-    keys: [todoList.id],
+    keys: [list.id],
     fn: (state, [id]) => state[id],
   });
 
   return (
-    <li>
-      <TodoListCard
-        actions={
-          <TodoListActionsPopover
-            actions={[
-              {
-                name: 'editLabelList',
-                content: 'Edit',
-                onAction: () => openTodoListLabelForm(todoList.id),
-              },
-              {
-                name: 'deleteList',
-                content: 'Delete',
-                className: 'text-red-500',
-                onAction: () => deleteTodoList({ id: todoList.id }),
-              },
-            ]}
+    <TodoListCard
+      actions={
+        <TodoListActionsPopover
+          actions={[
+            {
+              name: 'editLabelList',
+              content: 'Edit',
+              onAction: () => openTodoListLabelForm(list.id),
+            },
+            {
+              name: 'deleteList',
+              content: 'Delete',
+              className: 'text-red-500',
+              onAction: () => deleteTodoList({ id: list.id }),
+            },
+          ]}
+        />
+      }
+      label={
+        isOpenLabelForm ? (
+          <UpdateTodoListLabelForm
+            id={list.id}
+            label={list.label}
+            onBlur={() => closeTodoListLabelForm(list.id)}
           />
-        }
-        label={
-          todoListLabelFormIsOpen ? (
-            <UpdateTodoListLabelForm
-              id={todoList.id}
-              label={todoList.label}
-              onBlur={() => closeTodoListLabelForm(todoList.id)}
-            />
-          ) : (
-            <TodoListLabel label={todoList.label} />
-          )
-        }
-      >
-        <TodosContent listId={todoList.id} />
-        <AddTodo listId={todoList.id} />
-      </TodoListCard>
-    </li>
+        ) : (
+          <TodoListLabel label={list.label} />
+        )
+      }
+    >
+      <TodosContent listId={list.id} />
+      <AddTodo listId={list.id} />
+    </TodoListCard>
   );
 };
 
-const TodoListsList = list({
-  view: TodoListItemView,
-  source: filterTodoListModel.selectors.$filteredTodoLists,
+const TodoListsItem = reflect({
+  view: TodoListsItemView,
   bind: {
     deleteTodoList: deleteTodoListModel.events.deleteTodoList,
     openTodoListLabelForm: updateTodoListModel.labelFormState.open,
     closeTodoListLabelForm: updateTodoListModel.labelFormState.close,
   },
-  mapItem: {
-    todoList: (_list) => _list,
-  },
-  getKey: ({ id }) => id,
 });
 
-const TodoListsContent = () => (
-  <ul className='grid h-full grid-cols-3 3xl:grid-cols-2 gap-10 xl:flex xl:flex-col'>
-    <TodoListsList />
-  </ul>
-);
+const TodoListsContent = () => {
+  const lists = useList(
+    filterTodoListModel.selectors.$filteredTodoLists,
+    (_list) => (
+      <li className='mb-10 xl:mb-0'>
+        <TodoListsItem list={_list} />
+      </li>
+    ),
+  );
+
+  return (
+    <ul className='columns-three 3xl:columns-two xl:columns-one'>{lists}</ul>
+  );
+};
 
 export { TodoListsContent };

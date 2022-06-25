@@ -31,7 +31,7 @@
 
 @layer components {
   .card {
-    @apply flex flex-col w-full gap-2 p-6 h-full rounded-xl bg-violet-100 shadow-md border-violet-400;
+    @apply flex flex-col w-full gap-2 p-6 h-fit rounded-xl bg-violet-100 shadow-md border-violet-400 break-inside-avoid;
   }
 
   .btn {
@@ -71,5 +71,15 @@
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+
+  .columns-one {
+    @apply flex flex-col gap-10;
+  }
+  .columns-two {
+    @apply columns-2 gap-x-10 gap-y-10;
+  }
+  .columns-three {
+    @apply columns-3 gap-x-10 gap-y-10;
   }
 }
