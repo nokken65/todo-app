@@ -20,7 +20,7 @@ import type {
 
 const getTodoListsByDateOriginalFx = createEffect<
   GetTodoListsByDateInputs,
-  TodoList[]
+  { data: TodoList[]; date: DateString }
 >(async ({ date }) => {
   const { data, error } = await getTodoListsByDate({ date });
 
@@ -32,7 +32,7 @@ const getTodoListsByDateOriginalFx = createEffect<
     throw new Error('Cannot find todo lists');
   }
 
-  return data;
+  return { data, date };
 });
 
 const getTodoListsByDateFx = attach({
@@ -47,7 +47,7 @@ const $todoListsMap = createStore<Record<DateString, TodoList[]>>({}).on(
   getTodoListsByDateFx.doneData,
   (state, payload) =>
     produce(state, (draft) => {
-      if (payload.length !== 0) draft[payload[0].date] = payload;
+      draft[payload.date] = payload.data;
     }),
 );
 

@@ -1,16 +1,21 @@
-import { MutableRefObject, useEffect } from 'react';
+import { RefObject, useEffect } from 'react';
 
-export const useOuterClick = <T extends HTMLElement>(
-  ref: MutableRefObject<T | null>,
+type Event = MouseEvent | TouchEvent;
+
+export const useOuterClick = <T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T>,
   handler: (event: Event) => void,
 ) => {
   useEffect(() => {
-    const listener: EventListenerOrEventListenerObject = (event: Event) => {
-      if (!ref?.current || ref.current.contains(event.target as HTMLElement)) {
+    const listener = (event: Event) => {
+      const el = ref?.current;
+      if (!el || el.contains((event?.target as Node) || null)) {
         return;
       }
-      handler(event);
+
+      handler(event); // Call the handler only if the click is outside of the element passed.
     };
+
     document.addEventListener('mousedown', listener);
     document.addEventListener('touchstart', listener);
 
@@ -18,5 +23,5 @@ export const useOuterClick = <T extends HTMLElement>(
       document.removeEventListener('mousedown', listener);
       document.removeEventListener('touchstart', listener);
     };
-  }, [ref, handler]);
+  }, [ref, handler]); // Reload only if ref or handler changes
 };

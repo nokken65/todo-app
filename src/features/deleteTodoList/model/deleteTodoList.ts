@@ -1,5 +1,6 @@
 import { createEffect, createEvent, forward } from 'effector';
 
+import { todoModel } from '~/entities/Todo';
 import {
   DeleteTodoListInputs,
   todoListApi,
@@ -24,6 +25,11 @@ const deleteTodoList = createEvent<DeleteTodoListInputs>();
 forward({
   from: deleteTodoList,
   to: [todoListModel.events.deleteTodoList, deleteTodoListFx],
+});
+
+forward({
+  from: deleteTodoList,
+  to: todoModel.effects.getTodosByDateFx,
 });
 
 export const events = { deleteTodoList };

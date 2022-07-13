@@ -25,7 +25,7 @@ const FeedRoute = () => {
 
         <DatePicker />
 
-        <div className='flex w-full gap-2'>
+        <div className='flex w-full h-10 gap-2'>
           <AddTodoList />
           <SearchTodoList />
         </div>

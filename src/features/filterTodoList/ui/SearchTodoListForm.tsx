@@ -23,10 +23,10 @@ const SearchTodoListFormView = ({
   onBlur,
 }: SearchTodoListFormProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const methods = useForm<Pick<TodoList, 'label'>>({
+  const methods = useForm<Pick<TodoList, 'label'> & { category: string }>({
     mode: 'onChange',
     resolver: yupResolver(searchTodoListSchema),
-    defaultValues: { label: searchQuery.label },
+    defaultValues: { label: searchQuery.label, category: 'by list' },
   });
 
   return (
@@ -45,17 +45,16 @@ const SearchTodoListFormView = ({
     >
       <Form.Field
         autoFocus
-        after={
-          <Button
-            htmlType='submit'
-            icon={<SearchIcon className='w-5 h-5' />}
-            isLoading={methods.formState.isSubmitting}
-            rounded={false}
-          />
-        }
+        className='rounded-tr-none rounded-br-none'
         name='label'
         placeholder='At work'
         type='search'
+      />
+      <Button
+        className='rounded-tl-none rounded-bl-none'
+        htmlType='submit'
+        icon={<SearchIcon className='w-5 h-5' />}
+        isLoading={methods.formState.isSubmitting}
       />
     </Form>
   );

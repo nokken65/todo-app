@@ -34,17 +34,16 @@ const AddTodoListFormView = ({ onSubmit, onBlur }: AddTodoListFormProps) => {
     >
       <Form.Field
         autoFocus
-        after={
-          <Button
-            htmlType='submit'
-            icon={<AddIcon className='w-4 h-4' />}
-            isLoading={methods.formState.isSubmitting}
-            rounded={false}
-          />
-        }
+        className='rounded-tr-none rounded-br-none'
         name='label'
         placeholder='At work'
         type='text'
+      />
+      <Button
+        className='rounded-tl-none rounded-bl-none'
+        htmlType='submit'
+        icon={<AddIcon className='w-4 h-4' />}
+        isLoading={methods.formState.isSubmitting}
       />
     </Form>
   );

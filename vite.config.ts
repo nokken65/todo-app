@@ -1,7 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
-import { defineConfig } from 'vite';
-import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import viteCompression from 'vite-plugin-compression';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -16,29 +15,7 @@ export default defineConfig({
     viteCompression({
       algorithm: 'gzip',
     }),
-    chunkSplitPlugin({
-      strategy: 'default',
-      customSplitting: {
-        'react-vendor': ['react', 'react-dom'],
-        'effector-vendor': [
-          'effector',
-          'effector-react',
-          '@effector/reflect',
-          'patronum',
-        ],
-        'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
-        'supabase-vendor': ['@supabase/supabase-js'],
-        'utils-vendor': [
-          'uuid',
-          'date-fns',
-          'lodash.flow',
-          'lodash.pickby',
-          'immer',
-          'clsx',
-        ],
-        'other-vendor': ['@idui/react-popover', 'react-indiana-drag-scroll'],
-      },
-    }),
+    splitVendorChunkPlugin(),
     react(),
     tsconfigPaths(),
   ],
@@ -47,6 +24,30 @@ export default defineConfig({
     sourcemap: false,
     cssCodeSplit: true,
     minify: 'esbuild',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'effector-vendor': [
+            'effector',
+            'effector-react',
+            '@effector/reflect',
+            'patronum',
+          ],
+          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'yup'],
+          'supabase-vendor': ['@supabase/supabase-js'],
+          'utils-vendor': [
+            'uuid',
+            'date-fns',
+            'lodash.flow',
+            'lodash.pickby',
+            'immer',
+            'clsx',
+          ],
+          'other-vendor': ['@idui/react-popover', 'react-indiana-drag-scroll'],
+        },
+      },
+    },
   },
   server: {
     hmr: true,

@@ -42,17 +42,15 @@ const UpdateTodoListLabelFormView = ({
         }
       }}
     >
+      <Button
+        className='rounded-tr-none rounded-br-none'
+        htmlType='submit'
+        icon={<EditIcon className='w-5 h-5' />}
+        isLoading={methods.formState.isSubmitting}
+      />
       <Form.Field
         autoFocus
-        before={
-          <Button
-            htmlType='submit'
-            icon={<EditIcon className='w-5 h-5' />}
-            isLoading={methods.formState.isSubmitting}
-            rounded={false}
-          />
-        }
-        className='h-10'
+        className='h-10 rounded-tl-none rounded-bl-none'
         name='label'
         placeholder='At work'
         type='text'
