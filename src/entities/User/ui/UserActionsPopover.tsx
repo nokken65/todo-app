@@ -1,17 +1,13 @@
-import Popover, {
-  PopoverPlacement,
-  PopoverTriggerType,
-} from '@idui/react-popover';
 import clsx from 'clsx';
-import { memo, ReactChild } from 'react';
+import { memo, PropsWithChildren } from 'react';
 
 import { Button } from '~/shared/components';
+import { Popover } from '~/shared/lib';
 import { PopoverActionButton } from '~/shared/types';
 
-type UserActionsPopoverProps = {
+type UserActionsPopoverProps = PropsWithChildren<{
   actions: PopoverActionButton[];
-  children: ReactChild;
-};
+}>;
 
 const UserActionsPopoverView = ({
   actions,
@@ -19,18 +15,8 @@ const UserActionsPopoverView = ({
 }: UserActionsPopoverProps) => {
   return (
     <Popover
-      closeOnEnter
-      closeOnEscape
-      closeOnRemoteClick
-      closeOnScroll
-      animation={{
-        initial: { opacity: 0, translateY: -50 },
-        animate: { opacity: 1, translateY: 0 },
-        exit: { opacity: 0, translateY: -50, transition: { duration: 0.1 } },
-      }}
-      className='!rounded-lg !p-0 !overflow-hidden !shadow-md'
-      content={
-        <div className='flex flex-col'>
+      contentNode={
+        <div className='flex flex-col overflow-hidden bg-white shadow-md rounded-xl'>
           {actions.map((action) => (
             <Button
               className={clsx('p-4', action.className)}
@@ -44,14 +30,9 @@ const UserActionsPopoverView = ({
           ))}
         </div>
       }
-      offset={[0, -5]}
-      openingAnimationTranslateDistance={0}
-      placement={PopoverPlacement.bottomRight}
-      trigger={PopoverTriggerType.click}
-      withArrow={false}
-    >
-      {children}
-    </Popover>
+      placement='bottom-end'
+      triggerNode={children}
+    />
   );
 };
 

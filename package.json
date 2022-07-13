@@ -13,7 +13,7 @@
   "dependencies": {
     "@effector/reflect": "^8.0.0",
     "@hookform/resolvers": "^2.9.5",
-    "@idui/react-popover": "^3.1.0",
+    "@popperjs/core": "^2.11.5",
     "@supabase/supabase-js": "^1.35.4",
     "clsx": "^1.2.1",
     "date-fns": "^2.28.0",
@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.1",
     "react-indiana-drag-scroll": "^2.2.0",
+    "react-popper": "^2.3.0",
     "react-router-dom": "^6.3.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"

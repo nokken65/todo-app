@@ -41,7 +41,7 @@ const Form = <TFormValues extends Record<string, any>>({
   return (
     <FormProvider {...methods}>
       <form
-        className={clsx('flex grow', className)}
+        className={clsx('flex w-full', className)}
         ref={wrapperRef}
         onSubmit={methods.handleSubmit(onSubmit)}
       >

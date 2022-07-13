@@ -8,7 +8,7 @@ const UserAvatarView = ({ url }: UserAvatarProps) => {
   return url ? (
     <img
       alt='user avatar'
-      className='rounded-full'
+      className='w-10 h-10 rounded-full'
       height={40}
       src={url}
       width={40}

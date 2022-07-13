@@ -45,18 +45,18 @@ const AddTodoFormView = ({ listId, onSubmit, onBlur }: AddTodoFormProps) => {
     <Form
       {...methods}
       resetOnSubmitSuccessful
-      className='max-w-md flex-col gap-2'
+      className='flex-col max-w-md gap-2'
       onSubmit={(data) => {
         onSubmit({ ...data, listId });
         onBlur();
       }}
     >
       {fields.map((field, i) => (
-        <div className='flex gap' key={field.id}>
+        <div className='flex w-full gap-2' key={field.id}>
           <Form.Field
             autoFocus
             before={
-              <span className='w-6 flex justify-center items-center text-sm text-gray-400'>
+              <span className='flex items-center justify-center w-6 text-sm text-gray-400'>
                 {i + 1}
               </span>
             }
