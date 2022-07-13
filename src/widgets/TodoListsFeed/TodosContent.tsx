@@ -44,12 +44,15 @@ type TodosContentProps = {
 };
 
 const TodosContentView = ({ listId }: TodosContentProps) => {
-  const todos = useList(
-    todoModel.selectors.$todos,
-    (todo) => todo.listId === listId && <TodosItem todo={todo} />,
-  );
+  const todos = useList(todoModel.selectors.$todos, {
+    fn: (todo) => todo.listId === listId && <TodosItem todo={todo} />,
+    keys: [todoModel.selectors.$todos],
+  });
 
   return <ul className='flex flex-col mb-4'>{todos}</ul>;
 };
 
-export const TodosContent = memo(TodosContentView);
+export const TodosContent = memo(
+  TodosContentView,
+  (prev, next) => prev.listId === next.listId,
+);

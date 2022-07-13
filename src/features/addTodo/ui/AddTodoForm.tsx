@@ -45,7 +45,7 @@ const AddTodoFormView = ({ listId, onSubmit, onBlur }: AddTodoFormProps) => {
     <Form
       {...methods}
       resetOnSubmitSuccessful
-      className='max-w-md !gap-2'
+      className='max-w-md flex-col gap-2'
       onSubmit={(data) => {
         onSubmit({ ...data, listId });
         onBlur();
