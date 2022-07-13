@@ -28,14 +28,12 @@ const UserCompactView = ({ user, signOut }: UserProps) => {
           },
         ]}
       >
-        <span>
-          <Button type='ghost'>
-            <Typography bold className='lg:hidden'>
-              {user.user_metadata.name ? user.user_metadata.name : 'User'}
-            </Typography>
-            <UserAvatar url={user.user_metadata.avatar_url} />
-          </Button>
-        </span>
+        <Button type='ghost'>
+          <Typography bold className='lg:hidden'>
+            {user.user_metadata.name ? user.user_metadata.name : 'User'}
+          </Typography>
+          <UserAvatar url={user.user_metadata.avatar_url} />
+        </Button>
       </UserActionsPopover>
     )
   );

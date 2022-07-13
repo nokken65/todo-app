@@ -31,7 +31,7 @@ const UpdateTodoListLabelFormView = ({
     <Form
       {...methods}
       resetOnSubmitSuccessful
-      className='max-w-md'
+      className='max-w-md '
       onBlur={onBlur}
       onSubmit={(data) => {
         if (data.label === label || !data.label) {

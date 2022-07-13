@@ -1,12 +1,9 @@
-import Popover, {
-  PopoverPlacement,
-  PopoverTriggerType,
-} from '@idui/react-popover';
 import clsx from 'clsx';
 import { memo } from 'react';
 
 import { Button } from '~/shared/components';
 import { MoreIcon } from '~/shared/icons';
+import { Popover } from '~/shared/lib';
 import { PopoverActionButton } from '~/shared/types';
 
 type TodoListActionsPopoverProps = {
@@ -18,13 +15,8 @@ const TodoListActionsPopoverView = ({
 }: TodoListActionsPopoverProps) => {
   return (
     <Popover
-      closeOnEnter
-      closeOnEscape
-      closeOnRemoteClick
-      closeOnScroll
-      className='!rounded-lg !p-0 !overflow-hidden'
-      content={
-        <div className='flex flex-col'>
+      contentNode={
+        <div className='flex flex-col overflow-hidden bg-white rounded-lg shadow-md'>
           {actions.map((action) => (
             <Button
               className={clsx('p-3', action.className)}
@@ -38,15 +30,13 @@ const TodoListActionsPopoverView = ({
           ))}
         </div>
       }
-      offset={[5, 0]}
-      placement={PopoverPlacement.leftTop}
-      trigger={PopoverTriggerType.hover}
-      withArrow={false}
-    >
-      <Button className='h-10' type='ghost'>
-        <MoreIcon className='w-4 h-4 text-gray-500' />
-      </Button>
-    </Popover>
+      placement='left-start'
+      triggerNode={
+        <Button className='h-10' type='ghost'>
+          <MoreIcon className='w-4 h-4 text-gray-500' />
+        </Button>
+      }
+    />
   );
 };
 

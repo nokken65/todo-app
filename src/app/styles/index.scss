@@ -31,7 +31,7 @@
 
 @layer components {
   .card {
-    @apply flex flex-col w-full gap-2 p-6 h-fit rounded-xl bg-violet-100 shadow-md border-violet-400 break-inside-avoid;
+    @apply flex flex-col w-full gap-2 p-6 h-fit overflow-hidden rounded-xl bg-violet-100 shadow-md border-violet-400 break-inside-avoid;
   }
 
   .btn {

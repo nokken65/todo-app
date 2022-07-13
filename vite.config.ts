@@ -44,7 +44,11 @@ export default defineConfig({
             'immer',
             'clsx',
           ],
-          'other-vendor': ['@idui/react-popover', 'react-indiana-drag-scroll'],
+          'other-vendor': [
+            '@popperjs/core',
+            'react-popper',
+            'react-indiana-drag-scroll',
+          ],
         },
       },
     },

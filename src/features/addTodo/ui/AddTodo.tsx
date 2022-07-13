@@ -21,7 +21,7 @@ const AddTodoView = ({ listId, openForm, closeForm }: AddTodoProps) => {
   });
 
   return (
-    <div className='flex w-full mt-auto -mb-11'>
+    <div className='flex w-full'>
       {isOpenForm ? (
         <AddTodoForm listId={listId} onBlur={() => closeForm(listId)} />
       ) : (
